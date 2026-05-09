@@ -3,6 +3,7 @@ import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/Button'
 import { EventCard } from './EventCard'
 import { EventModal } from './EventModal'
+import { EventExport } from './EventExport'
 import { useEventStore } from '@/store/useEventStore'
 import { useAuthor } from '@/hooks/useAuthor'
 import { Plus } from 'lucide-react'
@@ -52,17 +53,19 @@ export function EventList({ abs, events, className }: EventListProps) {
 
   return (
     <div className={cn(className)}>
-      {/* 创建按钮（仅作者可见）*/}
+      {/* 创建 + 导出按钮（仅作者可见）*/}
       {isAuthor && (
-        <Button
-          variant="secondary"
-          size="sm"
-          icon={<Plus className="h-4 w-4" />}
-          onClick={handleCreate}
-          className="mb-2"
-        >
-          创建新事件
-        </Button>
+        <div className="flex items-center gap-2 mb-2">
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={<Plus className="h-4 w-4" />}
+            onClick={handleCreate}
+          >
+            创建新事件
+          </Button>
+          <EventExport />
+        </div>
       )}
 
       {/* 事件列表 */}
