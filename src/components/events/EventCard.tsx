@@ -6,6 +6,7 @@ import type { CalendarEvent } from '@/types/events'
 
 interface EventCardProps {
   event: CalendarEvent
+  isAuthor?: boolean
   onEdit: (event: CalendarEvent) => void
   onDelete: (id: string) => void
 }
@@ -16,7 +17,7 @@ const TYPE_LABELS: Record<string, string> = {
   'astronomical-trigger': '天文触发',
 }
 
-export function EventCard({ event, onEdit, onDelete }: EventCardProps) {
+export function EventCard({ event, isAuthor = false, onEdit, onDelete }: EventCardProps) {
   const [showConfirm, setShowConfirm] = useState(false)
 
   const handleDeleteClick = () => setShowConfirm(true)
@@ -66,25 +67,27 @@ export function EventCard({ event, onEdit, onDelete }: EventCardProps) {
         </p>
       </div>
 
-      {/* 操作按钮 */}
-      <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-        <button
-          type="button"
-          onClick={() => onEdit(event)}
-          className="p-1 rounded hover:bg-[var(--bg-tertiary)] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
-          aria-label="编辑事件"
-        >
-          <Pencil className="h-3.5 w-3.5" />
-        </button>
-        <button
-          type="button"
-          onClick={handleDeleteClick}
-          className="p-1 rounded hover:bg-red-50 text-[var(--text-tertiary)] hover:text-[var(--error)] transition-colors"
-          aria-label="删除事件"
-        >
-          <Trash2 className="h-3.5 w-3.5" />
-        </button>
-      </div>
+      {/* 操作按钮（仅作者可见）*/}
+      {isAuthor && (
+        <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+          <button
+            type="button"
+            onClick={() => onEdit(event)}
+            className="p-1 rounded hover:bg-[var(--bg-tertiary)] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+            aria-label="编辑事件"
+          >
+            <Pencil className="h-3.5 w-3.5" />
+          </button>
+          <button
+            type="button"
+            onClick={handleDeleteClick}
+            className="p-1 rounded hover:bg-red-50 text-[var(--text-tertiary)] hover:text-[var(--error)] transition-colors"
+            aria-label="删除事件"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
     </div>
   )
 }

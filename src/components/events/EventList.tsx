@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/Button'
 import { EventCard } from './EventCard'
 import { EventModal } from './EventModal'
 import { useEventStore } from '@/store/useEventStore'
+import { useAuthor } from '@/hooks/useAuthor'
 import { Plus } from 'lucide-react'
 import type { CalendarEvent } from '@/types/events'
 
@@ -20,9 +21,15 @@ type ModalState =
 
 export function EventList({ abs, events, className }: EventListProps) {
   const [modal, setModal] = useState<ModalState>({ mode: 'closed' })
+  const isAuthor = useAuthor()
   const addEvent = useEventStore((s) => s.addEvent)
   const updateEvent = useEventStore((s) => s.updateEvent)
   const deleteEvent = useEventStore((s) => s.deleteEvent)
+  const fetchRemote = useEventStore((s) => s.fetchRemote)
+
+  useEffect(() => {
+    fetchRemote(abs)
+  }, [abs, fetchRemote])
 
   const handleCreate = () => setModal({ mode: 'create' })
   const handleEdit = (event: CalendarEvent) => setModal({ mode: 'edit', event })
@@ -45,16 +52,18 @@ export function EventList({ abs, events, className }: EventListProps) {
 
   return (
     <div className={cn(className)}>
-      {/* 创建按钮 */}
-      <Button
-        variant="secondary"
-        size="sm"
-        icon={<Plus className="h-4 w-4" />}
-        onClick={handleCreate}
-        className="mb-2"
-      >
-        创建新事件
-      </Button>
+      {/* 创建按钮（仅作者可见）*/}
+      {isAuthor && (
+        <Button
+          variant="secondary"
+          size="sm"
+          icon={<Plus className="h-4 w-4" />}
+          onClick={handleCreate}
+          className="mb-2"
+        >
+          创建新事件
+        </Button>
+      )}
 
       {/* 事件列表 */}
       {events.length === 0 ? (
@@ -63,7 +72,7 @@ export function EventList({ abs, events, className }: EventListProps) {
         <ul className="space-y-2">
           {events.map((evt) => (
             <li key={evt.id}>
-              <EventCard event={evt} onEdit={handleEdit} onDelete={handleDelete} />
+              <EventCard event={evt} isAuthor={isAuthor} onEdit={handleEdit} onDelete={handleDelete} />
             </li>
           ))}
         </ul>
