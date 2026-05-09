@@ -39,11 +39,13 @@ export const useCalendarStore = create<CalendarState>((set) => ({
   navigateMonth: (direction) =>
     set((state) => {
       if (direction === 'prev') {
+        if (state.currentYear === 0 && state.currentMonth === 1) return state
         if (state.currentMonth === 1) {
           return { currentYear: state.currentYear - 1, currentMonth: 12 }
         }
         return { currentMonth: state.currentMonth - 1 }
       } else {
+        if (state.currentYear === 1200 && state.currentMonth === 12) return state
         if (state.currentMonth === 12) {
           return { currentYear: state.currentYear + 1, currentMonth: 1 }
         }
@@ -51,7 +53,11 @@ export const useCalendarStore = create<CalendarState>((set) => ({
       }
     }),
 
-  goToYearMonth: (year, month) => set({ currentYear: year, currentMonth: month }),
+  goToYearMonth: (year, month) => {
+    const y = Math.max(0, Math.min(1200, year))
+    const m = Math.max(1, Math.min(12, month))
+    set({ currentYear: y, currentMonth: m })
+  },
 
   selectDate: (abs) => set({ selectedAbs: abs, isDetailPanelOpen: true }),
   clearSelection: () => set({ selectedAbs: null, isDetailPanelOpen: false }),

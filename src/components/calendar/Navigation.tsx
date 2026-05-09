@@ -30,6 +30,7 @@ export function Navigation({ className }: NavigationProps) {
 
   // 标题点击 → 内联日期选择器
   const [editing, setEditing] = useState(false)
+  const [hint, setHint] = useState('')
   const [editYear, setEditYear] = useState(String(currentYear))
   const [editMonth, setEditMonth] = useState(String(currentMonth))
   const inputRef = useRef<HTMLInputElement>(null)
@@ -43,9 +44,15 @@ export function Navigation({ className }: NavigationProps) {
   }, [editing, currentYear, currentMonth])
 
   const handleJump = () => {
-    const y = Math.max(0, Math.min(1200, parseInt(editYear, 10) || 0))
-    const m = Math.max(1, Math.min(12, parseInt(editMonth, 10) || 1))
+    const rawYear = parseInt(editYear, 10) || 0
+    const rawMonth = parseInt(editMonth, 10) || 1
+    const y = Math.max(0, Math.min(1200, rawYear))
+    const m = Math.max(1, Math.min(12, rawMonth))
     goToYearMonth(y, m)
+    if (rawYear > 1200 || rawYear < 0) {
+      setHint('年份限制 0-1200，已自动调整')
+      setTimeout(() => setHint(''), 2500)
+    }
     setEditing(false)
   }
 
@@ -117,6 +124,13 @@ export function Navigation({ className }: NavigationProps) {
         >
           {currentYear}年{String(currentMonth).padStart(2, '0')}月
         </button>
+      )}
+
+      {/* 越界提示 */}
+      {hint && (
+        <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] text-[var(--event-B)] whitespace-nowrap animate-fade-in">
+          {hint}
+        </span>
       )}
 
       {/* 下一月 */}

@@ -22,6 +22,8 @@ function HeaderActions() {
 
 export default function App() {
   const viewMode = useCalendarStore((s) => s.viewMode)
+  const currentYear = useCalendarStore((s) => s.currentYear)
+  const currentMonth = useCalendarStore((s) => s.currentMonth)
   const theme = useCalendarStore((s) => s.theme)
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function App() {
           <div className="flex-1 flex flex-col p-3 sm:p-4 max-w-3xl mx-auto w-full">
             <Navigation className="mb-4" />
 
-            <div key={viewMode} className="animate-fade-in">
+            <div key={`${currentYear}-${currentMonth}-${viewMode}`} className="animate-fade-in">
               <CalendarGrid />
             </div>
 

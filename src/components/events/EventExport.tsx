@@ -51,6 +51,7 @@ export function EventExport({ className }: EventExportProps) {
   })
 
   const handleJson = () => {
+    if (rows.length === 0) { alert('暂无事件可导出'); return }
     const safe = rows.map(({ id, title, description, type, date, abs, category, createdAt }) => ({
       id, title, description, type, date, abs, category, createdAt,
     }))
@@ -63,6 +64,7 @@ export function EventExport({ className }: EventExportProps) {
   }
 
   const handleCsv = () => {
+    if (rows.length === 0) { alert('暂无事件可导出'); return }
     const BOM = '﻿'
     const headers = ['标题', '类型', '阳历日期', '主月历', 'ABS', '描述', '创建时间']
     const lines = [BOM + headers.join(',')]
@@ -85,8 +87,6 @@ export function EventExport({ className }: EventExportProps) {
     )
     setOpen(false)
   }
-
-  if (rows.length === 0) return null
 
   return (
     <div className={cn('relative inline-block', className)}>

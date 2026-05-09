@@ -113,7 +113,7 @@ export function EventModal({ mode, initialData, anchorAbs, onSubmit, onCancel }:
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div className="w-full h-full sm:max-w-md sm:h-auto sm:mx-4 bg-white sm:rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)] p-4 sm:p-6 overflow-y-auto">
+      <div className="w-full h-full sm:max-w-md sm:h-auto sm:mx-4 bg-[var(--bg-primary)] sm:rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)] p-4 sm:p-6 overflow-y-auto">
         <h2 id="modal-title" className="text-lg font-semibold text-[var(--text-primary)] mb-5">
           {mode === 'create' ? '创建新事件' : '编辑事件'}
         </h2>
@@ -148,7 +148,7 @@ export function EventModal({ mode, initialData, anchorAbs, onSubmit, onCancel }:
                 className={cn(
                   'flex flex-col items-center gap-1 p-3 rounded-[var(--radius-md)] border-2 transition-all text-sm',
                   eventType === opt.value
-                    ? 'border-[var(--accent-500)] ring-2 ring-[var(--accent-100)] bg-[var(--accent-50)]'
+                    ? 'border-[var(--accent-500)] ring-2 ring-[var(--accent-100)] bg-[var(--bg-active)]'
                     : 'border-[var(--border-light)] hover:border-[var(--accent-300)]',
                   opt.disabled && 'opacity-40 cursor-not-allowed',
                 )}
@@ -173,7 +173,7 @@ export function EventModal({ mode, initialData, anchorAbs, onSubmit, onCancel }:
               <select
                 value={anchorMonth}
                 onChange={(e) => setAnchorMonth(Number(e.target.value))}
-                className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--border-light)] text-sm bg-white focus:outline-none focus:border-[var(--accent-500)]"
+                className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--border-light)] text-sm bg-[var(--bg-primary)] focus:outline-none focus:border-[var(--accent-500)]"
               >
                 {Array.from({ length: 12 }, (_, i) => (
                   <option key={i + 1} value={i + 1}>{i + 1}月</option>
@@ -187,7 +187,7 @@ export function EventModal({ mode, initialData, anchorAbs, onSubmit, onCancel }:
               <select
                 value={anchorDay}
                 onChange={(e) => setAnchorDay(Number(e.target.value))}
-                className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--border-light)] text-sm bg-white focus:outline-none focus:border-[var(--accent-500)]"
+                className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--border-light)] text-sm bg-[var(--bg-primary)] focus:outline-none focus:border-[var(--accent-500)]"
               >
                 {Array.from({ length: 30 }, (_, i) => (
                   <option key={i + 1} value={i + 1}>{i + 1}日</option>
@@ -207,7 +207,7 @@ export function EventModal({ mode, initialData, anchorAbs, onSubmit, onCancel }:
             onChange={(e) => setDescription(e.target.value.slice(0, MAX_DESC))}
             placeholder="输入事件描述..."
             rows={3}
-            className="w-full px-3 py-2 text-sm rounded-[var(--radius-md)] border border-[var(--border-light)] bg-white resize-none focus:outline-none focus:border-[var(--accent-500)] focus:ring-[3px] focus:ring-[rgba(99,102,241,0.1)] placeholder:text-[var(--text-tertiary)]"
+            className="w-full px-3 py-2 text-sm rounded-[var(--radius-md)] border border-[var(--border-light)] bg-[var(--bg-primary)] resize-none focus:outline-none focus:border-[var(--accent-500)] focus:ring-[3px] focus:ring-[rgba(99,102,241,0.1)] placeholder:text-[var(--text-tertiary)]"
           />
           <p className="text-xs text-[var(--text-tertiary)] mt-1 text-right">
             {description.length}/{MAX_DESC}
