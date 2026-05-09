@@ -57,9 +57,12 @@ function computeYearStartAbs(year: number): number {
  * 用于历法引擎其他模块的年份边界计算
  */
 export function getYearStartAbs(year: number): AbsoluteDayNumber {
-  if (year < ASTRONOMICAL_CONSTANTS.MIN_YEAR || year > ASTRONOMICAL_CONSTANTS.MAX_YEAR) {
-    throw new Error(
-      `年份超出范围：${year}，必须在 ${ASTRONOMICAL_CONSTANTS.MIN_YEAR}-${ASTRONOMICAL_CONSTANTS.MAX_YEAR} 之间`,
+  if (year < ASTRONOMICAL_CONSTANTS.MIN_YEAR) {
+    throw new Error(`年份不能为负数: ${year}`)
+  }
+  if (year > ASTRONOMICAL_CONSTANTS.MAX_YEAR) {
+    console.warn(
+      `[CalendarEngine] 年份 ${year} 超过推荐范围 ${ASTRONOMICAL_CONSTANTS.MAX_YEAR}`,
     )
   }
   return computeYearStartAbs(year)

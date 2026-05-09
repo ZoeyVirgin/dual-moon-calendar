@@ -4,7 +4,7 @@ import { WeekdayHeader } from './WeekdayHeader'
 import { GridCell, type CellVariant } from './GridCell'
 import { useCalendarStore } from '@/store/useCalendarStore'
 import { useEventStore } from '@/store/useEventStore'
-import { getCalendarDate, getYearStartAbs, getDaysInMonth, isLeapYear } from '@/engine'
+import { getCalendarDate, getYearStartAbs, getDaysInMonth, isLeapYear, getMaxAbsoluteDay } from '@/engine'
 import type { CalendarDate } from '@/types/calendar'
 
 interface CalendarGridProps {
@@ -66,12 +66,14 @@ function generateMonthDates(year: number, month: number): GridDate[] {
     })
   }
 
-  // 后置填充：补齐到 TOTAL_CELLS
+  // 后置填充：补齐到 TOTAL_CELLS（不超出有效 ABS 范围）
+  const maxAbs = getMaxAbsoluteDay()
   const remaining = TOTAL_CELLS - results.length
   for (let i = 1; i <= remaining; i++) {
-    const abs = monthFirstAbs + daysInMonth + (i - 1)
+    const nextAbs = monthFirstAbs + daysInMonth + (i - 1)
+    if (nextAbs > maxAbs) break
     results.push({
-      date: getCalendarDate(abs),
+      date: getCalendarDate(nextAbs),
       variant: 'next',
     })
   }

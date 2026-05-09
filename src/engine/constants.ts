@@ -18,7 +18,7 @@ export const ASTRONOMICAL_CONSTANTS = {
 
   // 时间范围边界
   MIN_YEAR: 0,
-  MAX_YEAR: 1200,
+  MAX_YEAR: 5000,
 
   // ABS起点定义（历法.md已明确）
   ABS_ORIGIN: 0,                       // ABS=0 = 公元0年第1天

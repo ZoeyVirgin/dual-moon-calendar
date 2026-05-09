@@ -54,6 +54,6 @@ export {
 } from './astronomical';
 
 // ★★★ 统一API（推荐使用）★★★
-export { getCalendarDate, precomputeCache, precomputeCacheSync } from './calendar';
+export { getCalendarDate, getMaxAbsoluteDay, precomputeCache, precomputeCacheSync } from './calendar';
 
 

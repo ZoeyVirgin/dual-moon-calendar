@@ -36,22 +36,13 @@ let _maxAbsCache: number | null = null
 
 function getMaxAbsoluteDay(): number {
   if (_maxAbsCache !== null) return _maxAbsCache
-
   const lastYear = ASTRONOMICAL_CONSTANTS.MAX_YEAR
-  // 1200年是平年（1200%600==0强制修正），12月有29天，最后一天是12月29日
-  // yearStartAbs(1200) + 30(1月) + 10*29(2-11月) + 28(12月1-28日的偏移)
-  let abs = getYearStartAbs(lastYear)
-  // 累加1-11月
-  abs += 30 // 1月
-  for (let m = 2; m <= 11; m++) {
-    abs += 29
-  }
-  // 12月的最后一天（day 29 → offset 28）
-  abs += 28
-
+  const abs = getYearStartAbs(lastYear + 1) - 1
   _maxAbsCache = abs
   return abs
 }
+
+export { getMaxAbsoluteDay }
 
 // ============================================
 // ★ 核心统一API
@@ -68,10 +59,8 @@ function getMaxAbsoluteDay(): number {
  * @throws RangeError 当abs超出有效范围时抛出
  */
 export function getCalendarDate(abs: AbsoluteDayNumber): CalendarDate {
-  const maxAbs = getMaxAbsoluteDay()
-
-  if (abs < 0 || abs > maxAbs) {
-    throw new RangeError(`ABS ${abs} 超出有效范围 [0, ${maxAbs}]`)
+  if (abs < 0) {
+    throw new RangeError('ABS 不能为负数')
   }
 
   // 1. 基础转换

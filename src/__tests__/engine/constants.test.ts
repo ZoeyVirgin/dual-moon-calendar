@@ -35,9 +35,9 @@ describe('天文常量正确性验证', () => {
     expect(ASTRONOMICAL_CONSTANTS.PRECESSION_CYCLE).toBe(18000);
   });
 
-  it('时间范围应在0-1200年之间', () => {
+  it('时间范围应在0-5000年之间', () => {
     expect(ASTRONOMICAL_CONSTANTS.MIN_YEAR).toBe(0);
-    expect(ASTRONOMICAL_CONSTANTS.MAX_YEAR).toBe(1200);
+    expect(ASTRONOMICAL_CONSTANTS.MAX_YEAR).toBe(5000);
   });
 
   it('ABS起点应为0', () => {

@@ -20,13 +20,11 @@ export function Navigation({ className }: NavigationProps) {
     if (currentYear > 0) goToYearMonth(currentYear - 1, currentMonth)
   }
   const handleNextYear = () => {
-    if (currentYear < 1200) goToYearMonth(currentYear + 1, currentMonth)
+    goToYearMonth(currentYear + 1, currentMonth)
   }
 
   const isAtMonthStart = currentYear === 0 && currentMonth === 1
-  const isAtMonthEnd = currentYear === 1200 && currentMonth === 12
   const isAtYearStart = currentYear === 0
-  const isAtYearEnd = currentYear === 1200
 
   // 标题点击 → 内联日期选择器
   const [editing, setEditing] = useState(false)
@@ -46,11 +44,11 @@ export function Navigation({ className }: NavigationProps) {
   const handleJump = () => {
     const rawYear = parseInt(editYear, 10) || 0
     const rawMonth = parseInt(editMonth, 10) || 1
-    const y = Math.max(0, Math.min(1200, rawYear))
+    const y = Math.max(0, Math.min(5000, rawYear))
     const m = Math.max(1, Math.min(12, rawMonth))
     goToYearMonth(y, m)
-    if (rawYear > 1200 || rawYear < 0) {
-      setHint('年份限制 0-1200，已自动调整')
+    if (rawYear > 5000 || rawYear < 0) {
+      setHint('年份限制 0-5000，已自动调整')
       setTimeout(() => setHint(''), 2500)
     }
     setEditing(false)
@@ -139,9 +137,7 @@ export function Navigation({ className }: NavigationProps) {
         size="sm"
         icon={<ChevronRight className="h-4 w-4" />}
         onClick={() => navigateMonth('next')}
-        disabled={isAtMonthEnd}
         aria-label="下一月"
-        aria-disabled={isAtMonthEnd}
       />
 
       {/* 下一年 */}
@@ -150,9 +146,7 @@ export function Navigation({ className }: NavigationProps) {
         size="sm"
         icon={<ChevronsRight className="h-4 w-4" />}
         onClick={handleNextYear}
-        disabled={isAtYearEnd}
         aria-label="下一年"
-        aria-disabled={isAtYearEnd}
       />
     </div>
   )

@@ -54,7 +54,7 @@ export const useCalendarStore = create<CalendarState>((set) => ({
     }),
 
   goToYearMonth: (year, month) => {
-    const y = Math.max(0, Math.min(1200, year))
+    const y = Math.max(0, Math.min(5000, year))
     const m = Math.max(1, Math.min(12, month))
     set({ currentYear: y, currentMonth: m })
   },

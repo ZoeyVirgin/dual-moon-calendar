@@ -197,10 +197,10 @@ describe('solarToAbs', () => {
     ).toThrow(/年份超出范围/)
   })
 
-  it('应该拒绝超过1200年的年份', () => {
-    expect(() =>
-      solarToAbs({ year: 1201, month: 1, day: 1, isLeapYear: false, dayOfYear: 1 }),
-    ).toThrow(/年份超出范围/)
+  it('1201年应可正常转换（软限制）', () => {
+    const result = solarToAbs({ year: 1201, month: 1, day: 1, isLeapYear: false, dayOfYear: 1 })
+    expect(typeof result).toBe('number')
+    expect(result).toBeGreaterThan(0)
   })
 
   it('应该拒绝闰年1月31日（1月最多30天）', () => {
@@ -278,8 +278,10 @@ describe('absToSolar', () => {
     expect(() => absToSolar(-1)).toThrow(/ABS不能为负数/)
   })
 
-  it('应该拒绝超大ABS（超出1200年范围）', () => {
-    expect(() => absToSolar(999999)).toThrow(/超出最大支持年份/)
+  it('超大ABS可正常转换（软限制）', () => {
+    const result = absToSolar(999999)
+    expect(typeof result.year).toBe('number')
+    expect(result.year).toBeGreaterThan(1200)
   })
 })
 
