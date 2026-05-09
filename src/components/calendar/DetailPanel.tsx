@@ -44,6 +44,7 @@ export function DetailPanel({ className }: DetailPanelProps) {
   const selectedAbs = useCalendarStore((s) => s.selectedAbs)
   const isOpen = useCalendarStore((s) => s.isDetailPanelOpen)
   const getEventsByAbs = useEventStore((s) => s.getEventsByAbs)
+  const eventsRaw = useEventStore((s) => s.events)
 
   const date = useMemo(() => {
     if (selectedAbs === null) return null
@@ -53,7 +54,7 @@ export function DetailPanel({ className }: DetailPanelProps) {
   const events = useMemo(() => {
     if (selectedAbs === null) return []
     return getEventsByAbs(selectedAbs)
-  }, [selectedAbs, getEventsByAbs])
+  }, [selectedAbs, eventsRaw, getEventsByAbs])
 
   // 空状态：无选中日期
   if (!date) {
@@ -77,7 +78,7 @@ export function DetailPanel({ className }: DetailPanelProps) {
     <div
       className={cn(
         'mt-4 overflow-hidden transition-all duration-[var(--duration-slow)]',
-        'border border-[var(--border-light)] rounded-[var(--radius-lg)] bg-white',
+        'border border-[var(--border-light)] rounded-[var(--radius-lg)] bg-[var(--bg-primary)]',
         isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0 border-transparent',
         className,
       )}

@@ -16,8 +16,8 @@ export function MainLayout({ children, headerActions, className }: MainLayoutPro
         className={cn(
           'sticky top-0 z-50 h-14 sm:h-16',
           'flex items-center justify-between px-3 sm:px-6',
-          'bg-[var(--bg-primary)] border-b border-[var(--border-light)]',
-          'backdrop-blur-sm bg-white/90',
+          'bg-[var(--bg-primary)]/90 border-b border-[var(--border-light)]',
+          'backdrop-blur-sm',
         )}
       >
         {/* Logo */}
