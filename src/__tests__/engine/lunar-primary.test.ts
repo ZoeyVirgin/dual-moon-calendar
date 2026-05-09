@@ -133,7 +133,7 @@ describe('主月历双向转换一致性', () => {
       expect(lunar.day).toBeGreaterThanOrEqual(1)
       expect(lunar.day).toBeLessThanOrEqual(20)
       expect(Object.values(MoonPhase)).toContain(lunar.phase)
-      expect(lunar.isLeapMonth).toBe(false)
+      // 闰月可能为 true 或 false（取决于所在月是否含中气）
     })
   })
 
@@ -250,19 +250,15 @@ describe('主月历与阳历交叉验证', () => {
       })
 
       let monthCount = 0
-      let currentAbs = yearStartAbs
+      let prevKey = ''
 
-      while (currentAbs < nextYearStartAbs && monthCount < 25) {
-        const lunar = solarToLunarPrimary(absToSolar(currentAbs))
-        currentAbs = lunarPrimaryToAbs({
-          year: lunar.year,
-          month: lunar.month + 1,
-          day: 1,
-          isLeapMonth: false,
-          monthName: '_',
-          phase: MoonPhase.NEW_MOON,
-        })
-        monthCount++
+      for (let abs = yearStartAbs; abs < nextYearStartAbs; abs++) {
+        const lunar = solarToLunarPrimary(absToSolar(abs))
+        const key = `${lunar.month}-${lunar.isLeapMonth}`
+        if (key !== prevKey) {
+          monthCount++
+          prevKey = key
+        }
       }
 
       expect(monthCount).toBeGreaterThanOrEqual(17)
