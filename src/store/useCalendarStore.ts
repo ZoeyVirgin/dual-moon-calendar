@@ -1,12 +1,21 @@
 import { create } from 'zustand'
 import type { ViewMode } from '@/types/calendar'
 
+function loadTheme(): 'light' | 'dark' {
+  try {
+    const saved = localStorage.getItem('dual-moon-calendar-theme')
+    if (saved === 'dark' || saved === 'light') return saved
+  } catch { /* noop */ }
+  return 'light'
+}
+
 interface CalendarState {
   viewMode: ViewMode
   currentYear: number
   currentMonth: number
   selectedAbs: number | null
   isDetailPanelOpen: boolean
+  theme: 'light' | 'dark'
 
   setViewMode: (mode: ViewMode) => void
   navigateMonth: (direction: 'prev' | 'next') => void
@@ -14,6 +23,7 @@ interface CalendarState {
   selectDate: (abs: number) => void
   clearSelection: () => void
   toggleDetailPanel: () => void
+  toggleTheme: () => void
 }
 
 export const useCalendarStore = create<CalendarState>((set) => ({
@@ -22,6 +32,7 @@ export const useCalendarStore = create<CalendarState>((set) => ({
   currentMonth: 1,
   selectedAbs: null,
   isDetailPanelOpen: false,
+  theme: loadTheme(),
 
   setViewMode: (mode) => set({ viewMode: mode }),
 
@@ -46,4 +57,12 @@ export const useCalendarStore = create<CalendarState>((set) => ({
   clearSelection: () => set({ selectedAbs: null, isDetailPanelOpen: false }),
   toggleDetailPanel: () =>
     set((state) => ({ isDetailPanelOpen: !state.isDetailPanelOpen })),
+
+  toggleTheme: () =>
+    set((state) => {
+      const next = state.theme === 'light' ? 'dark' : 'light'
+      document.documentElement.setAttribute('data-theme', next)
+      localStorage.setItem('dual-moon-calendar-theme', next)
+      return { theme: next }
+    }),
 }))

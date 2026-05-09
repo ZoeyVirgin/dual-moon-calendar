@@ -139,6 +139,26 @@ body {
   color: var(--accent-900);
 }
 
+/* ==========================================
+   深色主题（V1.3）
+   ========================================== */
+[data-theme='dark'] {
+  --bg-primary: #0F1119;
+  --bg-secondary: #1A1D2B;
+  --bg-tertiary: #252836;
+  --bg-active: #1E2030;
+  --text-primary: #EBECF0;
+  --text-secondary: #9BA1B0;
+  --text-tertiary: #6B7280;
+  --text-disabled: #4B505E;
+  --border-light: #2D3143;
+  --border-medium: #3D4258;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-tooltip: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+}
+
 /* 焦点可见性（无障碍）*/
 :focus-visible {
   outline: 2px solid var(--accent-500);
