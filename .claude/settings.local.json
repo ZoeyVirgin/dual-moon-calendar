@@ -4,7 +4,9 @@
       "Bash(npm create *)",
       "Bash(npx --yes create-vite@latest . --template react-ts)",
       "Bash(npm install *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(rm \"c:/0000/Github/calendar/api/events/[id]/route.ts\")",
+      "Bash(rmdir \"c:/0000/Github/calendar/api/events/[id]\")"
     ]
   }
 }
