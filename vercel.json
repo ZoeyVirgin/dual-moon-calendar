@@ -1,9 +1,4 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "functions": {
-    "api/auth/route.ts": { "runtime": "nodejs20.x" },
-    "api/events/route.ts": { "runtime": "nodejs20.x" },
-    "api/events/[id]/route.ts": { "runtime": "nodejs20.x" }
-  }
+  "outputDirectory": "dist"
 }
