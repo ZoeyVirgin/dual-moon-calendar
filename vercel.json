@@ -1,7 +1,9 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
-  ]
+  "functions": {
+    "api/auth/route.ts": { "runtime": "nodejs20.x" },
+    "api/events/route.ts": { "runtime": "nodejs20.x" },
+    "api/events/[id]/route.ts": { "runtime": "nodejs20.x" }
+  }
 }
