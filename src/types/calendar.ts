@@ -92,7 +92,7 @@ export interface AstronomicalEvent {
 // ============================================
 // 视图模式
 // ============================================
-export type ViewMode = 'solar' | 'lunar-primary';
+export type ViewMode = 'solar' | 'lunar-primary' | 'lunar-secondary';
 
 // ============================================
 // 聚合日期对象（引擎输出）

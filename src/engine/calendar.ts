@@ -1,5 +1,6 @@
 import { absToSolar, getYearStartAbs } from './solar'
 import { solarToLunarPrimary } from './lunar-primary'
+import { solarToLunarSecondary } from './lunar-secondary'
 import { calculateGanZhi } from './ganZhi'
 import { calculateAstronomicalEvents, calculateTideLevel } from './astronomical'
 import { ASTRONOMICAL_CONSTANTS, WEEKDAY_NAMES } from './constants'
@@ -7,9 +8,7 @@ import type {
   AbsoluteDayNumber,
   CalendarDate,
   WeekInfo,
-  LunarSecondaryDate,
 } from '@/types/calendar'
-import { MoonPhase } from '@/types/calendar'
 
 // ============================================
 // 辅助：星期计算（模5运算）
@@ -26,20 +25,6 @@ function calculateWeekInfo(abs: number): WeekInfo {
   return {
     dayOfWeek,
     dayName: WEEKDAY_NAMES[dayOfWeek],
-  }
-}
-
-// ============================================
-// 辅助：副月历占位（V1.0暂未实现）
-// ============================================
-
-function createDefaultLunarSecondary(): LunarSecondaryDate {
-  return {
-    year: 0,
-    month: 0,
-    day: 0,
-    isLeapMonth: false,
-    phase: MoonPhase.NEW_MOON,
   }
 }
 
@@ -92,7 +77,7 @@ export function getCalendarDate(abs: AbsoluteDayNumber): CalendarDate {
   // 1. 基础转换
   const solar = absToSolar(abs)
   const lunarPrimary = solarToLunarPrimary(solar)
-  const lunarSecondary = createDefaultLunarSecondary() // V1.0: 副月历暂为占位
+  const lunarSecondary = solarToLunarSecondary(solar)
 
   // 2. 星期计算
   const week = calculateWeekInfo(abs)

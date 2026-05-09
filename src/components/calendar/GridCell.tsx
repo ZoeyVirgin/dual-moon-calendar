@@ -129,8 +129,9 @@ export function GridCell({
   className,
 }: GridCellProps) {
   const isCurrentMonth = variant === 'current'
-  const { solar, lunarPrimary, tide, astronomicalEvents } = date
-  const phaseIcon = MOON_PHASE_ICONS[lunarPrimary.phase] || ''
+  const { solar, lunarPrimary, lunarSecondary, tide, astronomicalEvents } = date
+  const phaseSource = viewMode === 'lunar-secondary' ? lunarSecondary.phase : lunarPrimary.phase
+  const phaseIcon = MOON_PHASE_ICONS[phaseSource] || ''
 
   const handleClick = useCallback(() => {
     onSelect(date.abs)
@@ -177,10 +178,17 @@ export function GridCell({
         className,
       )}
     >
-      {/* 主月历模式：月相图标 + 月名·日 */}
+      {/* 主月历模式 */}
       {viewMode === 'lunar-primary' && (
         <span className="text-[10px] sm:text-[11px] leading-tight text-[var(--accent-600)] truncate text-center max-w-full px-0.5">
           {phaseIcon} {lunarPrimary.monthName}·{lunarPrimary.day}
+        </span>
+      )}
+
+      {/* 副月历模式 */}
+      {viewMode === 'lunar-secondary' && (
+        <span className="text-[10px] sm:text-[11px] leading-tight text-[var(--event-A)] truncate text-center max-w-full px-0.5">
+          {phaseIcon} 副{lunarSecondary.month}·{lunarSecondary.day}
         </span>
       )}
 

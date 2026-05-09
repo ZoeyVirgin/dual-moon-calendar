@@ -1,28 +1,40 @@
 import { Button } from '@/components/ui/Button'
 import { useCalendarStore } from '@/store/useCalendarStore'
+import type { ViewMode } from '@/types/calendar'
 
 interface ViewSwitcherProps {
   className?: string
 }
 
-/**
- * 视图切换按钮
- *
- * 在"阳历"和"主月历"之间切换。
- * 上层通过在 CalendarGrid 外层加 key={viewMode} 触发重新挂载 + fade-in 动画。
- */
+const MODE_LABELS: Record<ViewMode, string> = {
+  solar: '阳历',
+  'lunar-primary': '主月历',
+  'lunar-secondary': '副月历',
+}
+
+const CYCLE: ViewMode[] = ['solar', 'lunar-primary', 'lunar-secondary']
+
 export function ViewSwitcher({ className }: ViewSwitcherProps) {
   const viewMode = useCalendarStore((s) => s.viewMode)
   const setViewMode = useCalendarStore((s) => s.setViewMode)
 
-  const handleSwitch = () => {
-    setViewMode(viewMode === 'solar' ? 'lunar-primary' : 'solar')
-  }
+  const currentIdx = CYCLE.indexOf(viewMode)
+  const next = CYCLE[(currentIdx + 1) % CYCLE.length]
 
   return (
-    <Button variant="ghost" size="sm" onClick={handleSwitch} className={className}>
-      {viewMode === 'solar' ? '切换至主月历' : '切换至阳历'}
-    </Button>
+    <div className="flex items-center gap-1.5">
+      <span className="text-xs text-[var(--text-tertiary)] hidden sm:inline">
+        [{MODE_LABELS[viewMode]}]
+      </span>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setViewMode(next)}
+        className={className}
+      >
+        切换至{MODE_LABELS[next]}
+      </Button>
+    </div>
   )
 }
 

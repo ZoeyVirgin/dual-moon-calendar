@@ -41,6 +41,7 @@ export {
 // 核心算法导出（低级API）
 export { absToSolar, solarToAbs, isLeapYear, getDaysInMonth, getYearStartAbs } from './solar';
 export { solarToLunarPrimary, lunarPrimaryToAbs, calculateMoonAge } from './lunar-primary';
+export { solarToLunarSecondary, lunarSecondaryToAbs } from './lunar-secondary';
 
 // 功能模块导出
 export { calculateGanZhi } from './ganZhi';
@@ -55,5 +56,4 @@ export {
 // ★★★ 统一API（推荐使用）★★★
 export { getCalendarDate, precomputeCache, precomputeCacheSync } from './calendar';
 
-// TODO: V1.1 - 副月历转换函数
-// export { solarToLunarSecondary, lunarSecondaryToAbs } from './lunar-secondary';
+

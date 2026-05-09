@@ -56,14 +56,16 @@ describe('getCalendarDate 集成测试', () => {
     expect(date.lunarPrimary.monthName).toBeTruthy()
   })
 
-  it('副月历应返回V1.0占位值', () => {
+  it('副月历应返回有效的塞勒涅历日期', () => {
     const date = getCalendarDate(0)
 
     expect(date.lunarSecondary).toBeDefined()
     expect(date.lunarSecondary.year).toBe(0)
-    expect(date.lunarSecondary.month).toBe(0)
-    expect(date.lunarSecondary.day).toBe(0)
+    expect(date.lunarSecondary.month).toBeGreaterThanOrEqual(1)
+    expect(date.lunarSecondary.day).toBeGreaterThanOrEqual(1)
+    expect(date.lunarSecondary.day).toBeLessThanOrEqual(42)
     expect(date.lunarSecondary.isLeapMonth).toBe(false)
+    expect(Object.values(MoonPhase)).toContain(date.lunarSecondary.phase)
   })
 
   it('越界ABS应抛出RangeError', () => {

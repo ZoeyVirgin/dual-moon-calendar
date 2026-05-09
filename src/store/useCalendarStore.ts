@@ -1,6 +1,5 @@
 import { create } from 'zustand'
-
-type ViewMode = 'solar' | 'lunar-primary'
+import type { ViewMode } from '@/types/calendar'
 
 interface CalendarState {
   viewMode: ViewMode
