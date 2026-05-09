@@ -37,13 +37,19 @@ export function getDaysInMonth(month: number, isLeap: boolean): number {
 
 /**
  * 计算从公元0年1月1日到指定年份1月1日的累计天数（不含该年）
+ * 结果缓存：首次调用时计算并缓存 0..year 的所有值，后续 O(1)
  */
+const _yearStartCache: number[] = [0]
+
 function computeYearStartAbs(year: number): number {
-  let total = 0
-  for (let y = 0; y < year; y++) {
-    total += isLeapYear(y) ? SOLAR_RULES.DAYS_IN_LEAP_YEAR : SOLAR_RULES.DAYS_IN_COMMON_YEAR
+  if (year < _yearStartCache.length) return _yearStartCache[year]
+
+  for (let y = _yearStartCache.length; y <= year; y++) {
+    const prev = _yearStartCache[y - 1]
+    const days = isLeapYear(y - 1) ? SOLAR_RULES.DAYS_IN_LEAP_YEAR : SOLAR_RULES.DAYS_IN_COMMON_YEAR
+    _yearStartCache.push(prev + days)
   }
-  return total
+  return _yearStartCache[year]
 }
 
 /**

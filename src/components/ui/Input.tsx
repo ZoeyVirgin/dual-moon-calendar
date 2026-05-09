@@ -79,7 +79,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             aria-invalid={resolvedState === 'error'}
             aria-describedby={resolvedState === 'error' ? errorId : undefined}
             className={cn(
-              'w-full border bg-white transition-all duration-[var(--duration-fast)]',
+              'w-full border bg-[var(--bg-primary)] transition-all duration-[var(--duration-fast)]',
               'placeholder:text-[var(--text-tertiary)]',
               'focus:outline-none',
               sizeStyles[size],

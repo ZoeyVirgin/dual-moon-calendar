@@ -62,7 +62,7 @@ export function Navigation({ className }: NavigationProps) {
   }
 
   return (
-    <div className={cn('flex items-center justify-center gap-0.5', className)}>
+    <div className={cn('relative flex items-center justify-center gap-0.5', className)}>
       {/* 上一年 */}
       <Button
         variant="ghost"
@@ -101,7 +101,7 @@ export function Navigation({ className }: NavigationProps) {
           <select
             value={editMonth}
             onChange={(e) => setEditMonth(e.target.value)}
-            className="h-8 w-14 rounded-[var(--radius-sm)] border border-[var(--border-light)] text-xs text-center bg-white focus:outline-none focus:border-[var(--accent-500)]"
+            className="h-8 w-14 rounded-[var(--radius-sm)] border border-[var(--border-light)] text-xs text-center bg-[var(--bg-primary)] focus:outline-none focus:border-[var(--accent-500)]"
           >
             {Array.from({ length: 12 }, (_, i) => (
               <option key={i + 1} value={i + 1}>{i + 1}月</option>
