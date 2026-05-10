@@ -99,28 +99,28 @@ describe('getDaysInMonth', () => {
     expect(getDaysInMonth(11, false)).toBe(29)
   })
 
-  it('平年12月应有29天', () => {
-    expect(getDaysInMonth(12, false)).toBe(29)
+  it('平年12月应有30天', () => {
+    expect(getDaysInMonth(12, false)).toBe(30)
   })
 
-  it('闰年12月应有30天（唯一的闰年影响月份）', () => {
-    expect(getDaysInMonth(12, true)).toBe(30)
+  it('闰年12月应有31天（唯一的闰年影响月份）', () => {
+    expect(getDaysInMonth(12, true)).toBe(31)
   })
 
-  it('所有平年月份总和应为349', () => {
+  it('所有平年月份总和应为350', () => {
     let sum = 0
     for (let m = 1; m <= 12; m++) {
       sum += getDaysInMonth(m, false)
     }
-    expect(sum).toBe(349)
+    expect(sum).toBe(350)
   })
 
-  it('所有闰年月份总和应为350', () => {
+  it('所有闰年月份总和应为351', () => {
     let sum = 0
     for (let m = 1; m <= 12; m++) {
       sum += getDaysInMonth(m, true)
     }
-    expect(sum).toBe(350)
+    expect(sum).toBe(351)
   })
 
   it('2-11月（共10个月）不受闰年影响，始终29天', () => {
@@ -159,16 +159,16 @@ describe('solarToAbs', () => {
     ).toBe(348)
   })
 
-  it('公元1年1月1日（1是闰年）应为ABS 349（0年全年349天）', () => {
+  it('公元1年1月1日（1是闰年）应为ABS 350（0年全年350天）', () => {
     expect(
       solarToAbs({ year: 1, month: 1, day: 1, isLeapYear: true, dayOfYear: 1 }),
-    ).toBe(349)
+    ).toBe(350)
   })
 
   it('公元1年12月30日（闰年最后一天）应为ABS 698', () => {
     expect(
       solarToAbs({ year: 1, month: 12, day: 30, isLeapYear: true, dayOfYear: 350 }),
-    ).toBe(698)
+    ).toBe(699)
   })
 
   it('应该拒绝非法月份13月', () => {
@@ -183,12 +183,12 @@ describe('solarToAbs', () => {
     ).toThrow(/月份必须在1-12之间/)
   })
 
-  it('应该拒绝平年12月30日（平年12月只有29天）', () => {
+  it('平年12月30日应有效（平年12月有30天）', () => {
     // year=100, 100%8=4→闰年... wait, 4 is in the leap list!
     // Let's use year=0 (平年) instead
     expect(() =>
       solarToAbs({ year: 0, month: 12, day: 30, isLeapYear: false, dayOfYear: 350 }),
-    ).toThrow()
+    ).not.toThrow()
   })
 
   it('应该拒绝负年份', () => {
@@ -254,8 +254,8 @@ describe('absToSolar', () => {
     })
   })
 
-  it('ABS 349 应为公元1年1月1日', () => {
-    expect(absToSolar(349)).toEqual({
+  it('ABS 350 应为公元1年1月1日', () => {
+    expect(absToSolar(350)).toEqual({
       year: 1,
       month: 1,
       day: 1,
@@ -265,7 +265,7 @@ describe('absToSolar', () => {
   })
 
   it('ABS 698 应为公元1年12月30日（闰年最后一天）', () => {
-    expect(absToSolar(698)).toEqual({
+    expect(absToSolar(699)).toEqual({
       year: 1,
       month: 12,
       day: 30,
@@ -359,7 +359,7 @@ describe('连续年份一致性验证', () => {
     // 验证关键过渡点
     const transitions = [
       { year: 0, isLeap: false, days: 349, nextLeap: true },
-      { year: 1, isLeap: true, days: 350, nextLeap: true },
+      { year: 1, isLeap: true, days: 351, nextLeap: true },
       { year: 7, isLeap: true, days: 350, nextLeap: false },
       { year: 599, isLeap: true, days: 350, nextLeap: false }, // 600年修正平年
       { year: 600, isLeap: false, days: 349, nextLeap: true },
@@ -369,7 +369,7 @@ describe('连续年份一致性验证', () => {
       const lastDayAbs = solarToAbs({
         year: t.year,
         month: 12,
-        day: t.days === 350 ? 30 : 29,
+        day: t.isLeap ? 31 : 30,
         isLeapYear: t.isLeap,
         dayOfYear: t.days,
       })

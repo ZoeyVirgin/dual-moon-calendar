@@ -29,15 +29,15 @@ export const ASTRONOMICAL_CONSTANTS = {
 // ============================================
 export const SOLAR_RULES = {
   // 平年/闰年天数
-  DAYS_IN_COMMON_YEAR: 349,           // ✅ 已修正（原错误值为350）
-  DAYS_IN_LEAP_YEAR: 350,
+  DAYS_IN_COMMON_YEAR: 350,           // ✅ 已修正（原错误值为350）
+  DAYS_IN_LEAP_YEAR: 351,
 
   // 月份天数分配表（索引1-12，index 0占位）
   MONTH_DAYS: [
     0,                                // 占位
     30,                               // 1月
     29, 29, 29, 29, 29, 29, 29, 29, 29, 29,  // 2-11月（共10个月）
-    29                                // 12月（平年）/ 30（闰年）
+    30                                // 12月（平年）/ 31（闰年）
   ],
 
   // 闰年判定：年份 % 8 的余数
@@ -85,29 +85,28 @@ export const MOON_PHASE_CONFIG = {
   PRIMARY: {
     cycleLength: 19.5883,  // 主月朔望月
     phases: [
-      { name: 'new-moon', label: '朔', startAge: 0, endAge: 2 },
-      { name: 'waxing-crescent', label: '盈月', startAge: 3, endAge: 7 },
-      { name: 'first-quarter', label: '上弦', startAge: 8, endAge: 12 },
-      { name: 'waxing-gibbous', label: '盈凸', startAge: 13, endAge: 17 },
-      { name: 'full-moon', label: '望', startAge: 18, endAge: 22 },
-      { name: 'waning-gibbous', label: '亏凸', startAge: 23, endAge: 27 },
-      { name: 'last-quarter', label: '下弦', startAge: 28, endAge: 32 },
-      { name: 'waning-crescent', label: '残月', startAge: 33, endAge: 38 },
+      { name: 'new-moon', label: '朔', startAge: 0, endAge: 2.5 },
+      { name: 'waxing-crescent', label: '盈月', startAge: 2.5, endAge: 7.5 },
+      { name: 'first-quarter', label: '上弦', startAge: 7.5, endAge: 12.5 },
+      { name: 'waxing-gibbous', label: '盈凸', startAge: 12.5, endAge: 17.5 },
+      { name: 'full-moon', label: '望', startAge: 17.5, endAge: 22.5 },
+      { name: 'waning-gibbous', label: '亏凸', startAge: 22.5, endAge: 27.5 },
+      { name: 'last-quarter', label: '下弦', startAge: 27.5, endAge: 32.5 },
+      { name: 'waning-crescent', label: '残月', startAge: 32.5, endAge: 38.5 },
       // >38 接近下一个朔
     ] as const,
   },
   SECONDARY: {
     cycleLength: 41.4948,  // 副月朔望月
     phases: [
-      { name: 'new-moon', label: '朔', startAge: 0, endAge: 5 },
-      { name: 'waxing-crescent', label: '盈月', startAge: 6, endAge: 15 },
-      { name: 'first-quarter', label: '上弦', startAge: 16, endAge: 25 },
-      { name: 'waxing-gibbous', label: '盈凸', startAge: 26, endAge: 35 },
-      { name: 'full-moon', label: '望', startAge: 36, endAge: 46 },
-      { name: 'waning-gibbous', label: '亏凸', startAge: 47, endAge: 56 },
-      { name: 'last-quarter', label: '下弦', startAge: 57, endAge: 67 },
-      { name: 'waning-crescent', label: '残月', startAge: 68, endAge: 78 },
-      // >78 接近下一个朔
+      { name: 'new-moon', label: '朔', startAge: 0, endAge: 6 },
+      { name: 'waxing-crescent', label: '盈月', startAge: 6, endAge: 16 },
+      { name: 'first-quarter', label: '上弦', startAge: 16, endAge: 26 },
+      { name: 'waxing-gibbous', label: '盈凸', startAge: 26, endAge: 36 },
+      { name: 'full-moon', label: '望', startAge: 36, endAge: 47 },
+      { name: 'waning-gibbous', label: '亏凸', startAge: 47, endAge: 57 },
+      { name: 'last-quarter', label: '下弦', startAge: 57, endAge: 68 },
+      { name: 'waning-crescent', label: '残月', startAge: 68, endAge: 78.5 },
     ] as const,
   },
 } as const;

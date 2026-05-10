@@ -30,7 +30,7 @@ export function isLeapYear(year: number): boolean {
  */
 export function getDaysInMonth(month: number, isLeap: boolean): number {
   if (month === 12 && isLeap) {
-    return 30 // 闰年12月有30天
+    return 31 // 闰年12月有31天
   }
   return SOLAR_RULES.MONTH_DAYS[month] // 从常量表查询
 }

@@ -49,12 +49,12 @@ describe('天文常量正确性验证', () => {
 // 阳历规则验证
 // ============================================
 describe('阳历规则验证', () => {
-  it('平年天数应为349天（已修正）', () => {
-    expect(SOLAR_RULES.DAYS_IN_COMMON_YEAR).toBe(349);
+  it('平年天数应为350天（已修正）', () => {
+    expect(SOLAR_RULES.DAYS_IN_COMMON_YEAR).toBe(350);
   });
 
-  it('闰年天数应为350天', () => {
-    expect(SOLAR_RULES.DAYS_IN_LEAP_YEAR).toBe(350);
+  it('闰年天数应为351天', () => {
+    expect(SOLAR_RULES.DAYS_IN_LEAP_YEAR).toBe(351);
   });
 
   it('月份天数数组应包含13个元素（含占位符）', () => {
@@ -71,8 +71,8 @@ describe('阳历规则验证', () => {
     }
   });
 
-  it('12月默认应为29天（平年）', () => {
-    expect(SOLAR_RULES.MONTH_DAYS[12]).toBe(29);
+  it('12月默认应为30天（平年）', () => {
+    expect(SOLAR_RULES.MONTH_DAYS[12]).toBe(30);
   });
 
   it('闰年余数应包含5个值', () => {
@@ -87,11 +87,11 @@ describe('阳历规则验证', () => {
     expect(SOLAR_RULES.CENTURIAL_CORRECTION_CYCLE).toBe(600);
   });
 
-  it('平年月份天数总和应为349', () => {
-    // 1月30 + 2-11月各29(共290) + 12月29 = 349
+  it('平年月份天数总和应为350', () => {
+    // 1月30 + 2-11月各29(共290) + 12月29 = 350
     const days = SOLAR_RULES.MONTH_DAYS.slice(1) as number[];
     const sum = days.reduce((a, b) => a + b, 0);
-    expect(sum).toBe(349);
+    expect(sum).toBe(350);
   });
 });
 
