@@ -37,22 +37,20 @@ export default function App() {
       <LoadingScreen>
         <MainLayout headerActions={<HeaderActions />}>
           <div className="flex-1 flex flex-col p-3 sm:p-5 max-w-7xl mx-auto w-full">
-            {/* 顶栏 */}
-            <Navigation className="mb-4" />
-
             <div className="flex flex-col lg:flex-row gap-4">
-              {/* 左：日历 + 时间线 */}
-              <div className="lg:w-[420px] shrink-0">
+              {/* 左：导航 + 日历 */}
+              <div className="lg:w-[460px] shrink-0">
+                <Navigation className="mb-4" />
                 <div key={`${currentYear}-${currentMonth}-${viewMode}`}
                      className="animate-fade-in shadow-sm rounded-[var(--radius-lg)] overflow-hidden bg-[var(--bg-primary)]">
                   <CalendarGrid />
                 </div>
-                <Timeline />
               </div>
 
-              {/* 右：详情 + 节日管理 */}
-              <div className="flex-1 min-w-0">
+              {/* 右：详情 + 时间线 + 节日 */}
+              <div className="flex-1 min-w-0 lg:max-w-md">
                 <DetailPanel />
+                <Timeline />
                 <HolidayPanel />
               </div>
             </div>
