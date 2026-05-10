@@ -34,7 +34,7 @@ export function Timeline({ className }: TimelineProps) {
   useEffect(() => { saveOpen(open) }, [open])
 
   const visible = events
-    .filter((e) => e.display.isVisible)
+    .filter((e) => e.display.isVisible && e.type === 'historical-event')
     .sort((a, b) => a.dateAnchor.abs - b.dateAnchor.abs)
 
   if (visible.length === 0) return null

@@ -153,7 +153,7 @@ export function GridCell({
       <TopBadge events={astronomicalEvents} />
 
       {/* 底部行：B级天象 + 潮汐 + 事件彩条 */}
-      <div className="absolute bottom-0 left-1 right-1 flex flex-col items-center gap-px pb-1">
+      <div className="absolute bottom-0 left-1 right-1 flex flex-col items-center gap-0.5 pb-1">
         {/* B级天象 */}
         {astronomicalEvents.filter((e) => e.level === 'B').length > 0 && (
           <span className="text-[9px] leading-tight text-[var(--event-B)] truncate text-center w-full">

@@ -3,6 +3,7 @@ import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { getCalendarDate } from '@/engine/calendar'
+import { ChevronDown } from 'lucide-react'
 import type { EventType, CalendarEvent } from '@/types/events'
 
 interface EventModalProps {
@@ -38,6 +39,8 @@ export function EventModal({ mode, initialData, anchorAbs, onSubmit, onCancel }:
   const [anchorDay, setAnchorDay] = useState(
     () => (initialData as { recurrence?: { anchorDay: number } })?.recurrence?.anchorDay || 1,
   )
+  const [monthOpen, setMonthOpen] = useState(false)
+  const [dayOpen, setDayOpen] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitted, setSubmitted] = useState(false)
 
@@ -115,7 +118,7 @@ export function EventModal({ mode, initialData, anchorAbs, onSubmit, onCancel }:
     >
       <div className="w-full h-full sm:max-w-md sm:h-auto sm:mx-4 bg-[var(--bg-primary)] sm:rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)] p-4 sm:p-6 overflow-y-auto">
         <h2 id="modal-title" className="text-lg font-semibold text-[var(--text-primary)] mb-5">
-          {mode === 'create' ? '创建新事件' : '编辑事件'}
+          {mode === 'create' ? '添加标记' : '编辑标记'}
         </h2>
 
         {/* 标题 */}
@@ -166,33 +169,61 @@ export function EventModal({ mode, initialData, anchorAbs, onSubmit, onCancel }:
         {/* 周期性日期 (仅 recurring-holiday) */}
         {eventType === 'recurring-holiday' && (
           <div className="mb-4 grid grid-cols-2 gap-3">
+            {/* 月份 popover */}
             <div>
-              <label className="text-sm font-medium text-[var(--text-primary)] block mb-1">
-                月份
-              </label>
-              <select
-                value={anchorMonth}
-                onChange={(e) => setAnchorMonth(Number(e.target.value))}
-                className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--border-light)] text-sm bg-[var(--bg-primary)] focus:outline-none focus:border-[var(--accent-500)]"
-              >
-                {Array.from({ length: 12 }, (_, i) => (
-                  <option key={i + 1} value={i + 1}>{i + 1}月</option>
-                ))}
-              </select>
+              <label className="text-sm font-medium text-[var(--text-primary)] block mb-1">月份</label>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => { setMonthOpen(!monthOpen); setDayOpen(false) }}
+                  className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--border-light)] text-sm bg-[var(--bg-primary)] flex items-center justify-between hover:border-[var(--accent-300)] transition-colors"
+                >
+                  <span className="text-[var(--text-primary)]">{anchorMonth}月</span>
+                  <ChevronDown className="h-4 w-4 text-[var(--text-tertiary)]" />
+                </button>
+                {monthOpen && (
+                  <div className="dropdown-list absolute top-full left-0 mt-1 w-full max-h-44 overflow-y-auto rounded-[var(--radius-md)] border border-[var(--border-light)] bg-[var(--bg-primary)] shadow-[var(--shadow-md)] z-50 py-1"
+                    style={{ scrollbarWidth: 'thin', scrollbarColor: 'var(--border-light) transparent' }}>
+                    {Array.from({ length: 12 }, (_, i) => {
+                      const m = i + 1
+                      return (
+                        <button key={m} type="button"
+                          onClick={() => { setAnchorMonth(m); setMonthOpen(false) }}
+                          className={`w-full h-8 text-sm transition-colors ${m === anchorMonth ? 'bg-[var(--accent-500)] text-white' : 'text-[var(--text-primary)] hover:bg-[var(--accent-50)]'}`}
+                        >{m}月</button>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
+            {/* 日期 popover */}
             <div>
-              <label className="text-sm font-medium text-[var(--text-primary)] block mb-1">
-                日期
-              </label>
-              <select
-                value={anchorDay}
-                onChange={(e) => setAnchorDay(Number(e.target.value))}
-                className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--border-light)] text-sm bg-[var(--bg-primary)] focus:outline-none focus:border-[var(--accent-500)]"
-              >
-                {Array.from({ length: 30 }, (_, i) => (
-                  <option key={i + 1} value={i + 1}>{i + 1}日</option>
-                ))}
-              </select>
+              <label className="text-sm font-medium text-[var(--text-primary)] block mb-1">日期</label>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => { setDayOpen(!dayOpen); setMonthOpen(false) }}
+                  className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--border-light)] text-sm bg-[var(--bg-primary)] flex items-center justify-between hover:border-[var(--accent-300)] transition-colors"
+                >
+                  <span className="text-[var(--text-primary)]">{anchorDay}日</span>
+                  <ChevronDown className="h-4 w-4 text-[var(--text-tertiary)]" />
+                </button>
+                {dayOpen && (
+                  <div className="dropdown-list absolute top-full left-0 mt-1 w-full max-h-44 overflow-y-auto rounded-[var(--radius-md)] border border-[var(--border-light)] bg-[var(--bg-primary)] shadow-[var(--shadow-md)] z-50 py-1"
+                    style={{ scrollbarWidth: 'thin', scrollbarColor: 'var(--border-light) transparent' }}>
+                    {Array.from({ length: 30 }, (_, i) => {
+                      const d = i + 1
+                      return (
+                        <button key={d} type="button"
+                          onClick={() => { setAnchorDay(d); setDayOpen(false) }}
+                          className={`w-full h-8 text-sm transition-colors ${d === anchorDay ? 'bg-[var(--accent-500)] text-white' : 'text-[var(--text-primary)] hover:bg-[var(--accent-50)]'}`}
+                        >{d}日</button>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -242,7 +273,7 @@ export function EventModal({ mode, initialData, anchorAbs, onSubmit, onCancel }:
             取消
           </Button>
           <Button variant="primary" onClick={handleSubmit}>
-            {mode === 'create' ? '创建事件' : '保存修改'}
+            {mode === 'create' ? '添加' : '保存'}
           </Button>
         </div>
       </div>

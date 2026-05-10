@@ -62,7 +62,7 @@ export function EventList({ abs, events, className }: EventListProps) {
             icon={<Plus className="h-4 w-4" />}
             onClick={handleCreate}
           >
-            创建新事件
+            添加标记
           </Button>
           <EventExport />
         </div>
