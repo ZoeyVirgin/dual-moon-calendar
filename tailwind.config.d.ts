@@ -19,10 +19,19 @@ declare const _default: {
             };
             animation: {
                 'fade-in': string;
+                'fade-out': string;
                 'slide-up': string;
             };
             keyframes: {
                 fadeIn: {
+                    '0%': {
+                        opacity: string;
+                    };
+                    '100%': {
+                        opacity: string;
+                    };
+                };
+                fadeOut: {
                     '0%': {
                         opacity: string;
                     };

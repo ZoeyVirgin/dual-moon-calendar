@@ -24,12 +24,17 @@ export default {
       },
       animation: {
         'fade-in': 'fadeIn 200ms ease-out',
+        'fade-out': 'fadeOut 200ms ease-in',
         'slide-up': 'slideUp 400ms cubic-bezier(0.16, 1, 0.3, 1)',
       },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
+        },
+        fadeOut: {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
         },
         slideUp: {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
