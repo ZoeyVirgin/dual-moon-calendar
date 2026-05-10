@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { CalendarEvent } from '@/types/events'
+import { getCalendarDate } from '@/engine/calendar'
 import { v4 as uuidv4 } from 'uuid'
 
 function getAuthHeader(): Record<string, string> {
@@ -106,12 +107,16 @@ export const useEventStore = create<EventState>()(
       },
 
       getEventsByAbs: (abs) => {
+        const date = getCalendarDate(abs)
+        const solar = date.solar
+
         return get().events.filter((evt) => {
-          if (evt.type === 'recurring-holiday') {
-            const eventSolar = evt.dateAnchor.solar
-            if (eventSolar && eventSolar.month && eventSolar.day) {
+          if (evt.type === 'recurring-holiday' && 'recurrence' in evt) {
+            const rec = (evt as unknown as { recurrence: { anchorMonth?: number; anchorDay?: number } }).recurrence
+            if (rec && rec.anchorMonth === solar.month && rec.anchorDay === solar.day) {
               return true
             }
+            return false
           }
           return evt.dateAnchor.abs === abs
         })
