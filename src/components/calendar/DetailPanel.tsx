@@ -61,7 +61,7 @@ export function DetailPanel({ className }: DetailPanelProps) {
     return (
       <div
         className={cn(
-          'mt-4 px-4 py-6 border border-dashed border-[var(--border-light)] rounded-[var(--radius-lg)]',
+          'mt-0 px-4 py-6 border border-dashed border-[var(--border-light)] rounded-[var(--radius-lg)]',
           'flex items-center justify-center text-[var(--text-tertiary)] text-sm',
           className,
         )}

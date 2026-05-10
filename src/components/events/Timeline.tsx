@@ -37,7 +37,16 @@ export function Timeline({ className }: TimelineProps) {
     .filter((e) => e.display.isVisible && e.type === 'historical-event')
     .sort((a, b) => a.dateAnchor.abs - b.dateAnchor.abs)
 
-  if (visible.length === 0) return null
+  if (visible.length === 0) {
+    return (
+      <div className={cn('mt-4 border border-[var(--border-light)] rounded-[var(--radius-lg)] bg-[var(--bg-primary)] shadow-sm', className)}>
+        <div className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-[var(--text-tertiary)]">
+          <span className="text-base opacity-50">📅</span>
+          <span>时间线 · 暂无事件</span>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={cn('mt-4 border border-[var(--border-light)] rounded-[var(--radius-lg)] bg-[var(--bg-primary)] shadow-sm', className)}>
@@ -60,10 +69,14 @@ export function Timeline({ className }: TimelineProps) {
       {/* 事件列表 */}
       <div
         className={cn(
-          'overflow-hidden transition-all duration-[var(--duration-slow)]',
-          open ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0',
+          'overflow-hidden transition-all',
+          open ? 'max-h-[360px] opacity-100 overflow-y-auto' : 'max-h-0 opacity-0',
         )}
-        style={{ transitionTimingFunction: 'var(--ease-out-expo)' }}
+        style={{
+          transitionDuration: '600ms',
+          transitionTimingFunction: 'var(--ease-out-expo)',
+          ...(open ? { scrollbarWidth: 'thin', scrollbarColor: 'var(--border-light) transparent' } : {}),
+        }}
       >
         <div className="px-4 pb-4">
           <div className="border-l-2 border-[var(--accent-200)] ml-2.5 pl-6 space-y-4 pt-2">

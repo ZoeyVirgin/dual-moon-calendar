@@ -36,8 +36,8 @@ export default function App() {
     <ErrorBoundary>
       <LoadingScreen>
         <MainLayout headerActions={<HeaderActions />}>
-          <div className="flex-1 flex flex-col p-3 sm:p-5 max-w-7xl mx-auto w-full">
-            <div className="flex flex-col lg:flex-row gap-4">
+          <div className="flex-1 flex flex-col p-3 sm:p-5 max-w-5xl mx-auto w-full">
+            <div className="flex flex-col lg:flex-row gap-4 justify-center">
               {/* 左：导航 + 日历 */}
               <div className="lg:w-[460px] shrink-0">
                 <Navigation className="mb-4" />
@@ -49,6 +49,7 @@ export default function App() {
 
               {/* 右：详情 + 时间线 + 节日 */}
               <div className="flex-1 min-w-0 lg:max-w-md">
+                <div className="hidden lg:block h-[52px] mb-4" />
                 <DetailPanel />
                 <Timeline />
                 <HolidayPanel />
