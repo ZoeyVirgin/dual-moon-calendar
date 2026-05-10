@@ -112,7 +112,7 @@ export function GridCell({
       onMouseLeave={handleMouseLeave}
       onKeyDown={handleKeyDown}
       className={cn(
-        'relative flex flex-col items-center min-h-[60px] sm:min-h-[80px] p-1 sm:p-1.5',
+        'relative flex flex-col items-center min-h-[64px] sm:min-h-[84px] p-1 sm:p-1.5',
         'border border-[var(--border-light)]',
         'transition-all duration-[var(--duration-fast)] ease-out',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-500)] focus-visible:ring-offset-1 focus-visible:z-10',

@@ -77,9 +77,11 @@ export function DetailPanel({ className }: DetailPanelProps) {
   return (
     <div
       className={cn(
-        'mt-4 overflow-hidden transition-all duration-[var(--duration-slow)]',
+        'mt-0 transition-all duration-[var(--duration-slow)]',
         'border border-[var(--border-light)] rounded-[var(--radius-lg)] bg-[var(--bg-primary)] shadow-sm',
-        isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0 border-transparent',
+        isOpen
+          ? 'max-h-[800px] opacity-100'
+          : 'max-h-0 opacity-0 border-transparent overflow-hidden',
         className,
       )}
       style={{ transitionTimingFunction: 'var(--ease-out-expo)' }}
@@ -90,18 +92,18 @@ export function DetailPanel({ className }: DetailPanelProps) {
       <div className="p-3 sm:p-4 space-y-3 sm:space-y-4">
         {/* A区：日期摘要 */}
         <section aria-label="日期摘要">
-          <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm">
-            <span className="font-semibold text-[var(--text-primary)] tabular-nums">
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
+            <span className="font-semibold text-[var(--text-primary)] tabular-nums whitespace-nowrap">
               {solar.year}年{solar.month}月{solar.day}日
               {solar.isLeapYear && (
                 <span className="ml-1 text-xs font-normal text-[var(--accent-500)]">闰</span>
               )}
             </span>
-            <span className="text-[var(--text-secondary)]">
+            <span className="text-[var(--text-secondary)] whitespace-nowrap">
               主月历：{lunarPrimary.monthName}第{lunarPrimary.day}天
               <span className="ml-1 text-xs text-[var(--accent-500)]">（{phaseLabel}）</span>
             </span>
-            <span className="text-[var(--text-secondary)]">
+            <span className="text-[var(--text-secondary)] whitespace-nowrap">
               星期：{week.dayName}
             </span>
           </div>
