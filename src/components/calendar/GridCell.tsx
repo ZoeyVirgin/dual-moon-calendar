@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { cn } from '@/utils/cn'
-import type { CalendarDate, AstronomicalEvent, TideLevel, ViewMode } from '@/types/calendar'
+import type { CalendarDate, AstronomicalEvent, ViewMode } from '@/types/calendar'
 import type { CalendarEvent } from '@/types/events'
 import { MoonPhase } from '@/types/calendar'
 
@@ -30,88 +30,33 @@ const MOON_PHASE_ICONS: Record<string, string> = {
 }
 
 // ============================================
-// 天象标记子组件
+// S/A级天象圆点（右上角）
 // ============================================
 
-function AstronomicalMarkers({ events }: { events: AstronomicalEvent[] }) {
-  const sEvent = events.find((e) => e.level === 'S')
-  const aEvent = events.find((e) => e.level === 'A')
-  const bEvents = events.filter((e) => e.level === 'B')
-  const topBadge = sEvent || aEvent
-
-  return (
-    <>
-      {/* S级: 右上角红色脉动圆点 */}
-      {topBadge && (
-        <span
-          className={cn(
-            'absolute top-1 right-1 w-2 h-2 rounded-full',
-            topBadge.level === 'S' && 'bg-[var(--event-S)] animate-pulse',
-            topBadge.level === 'A' && 'bg-[var(--event-A)]',
-          )}
-          title={topBadge.name}
-          aria-label={topBadge.name}
-        />
-      )}
-
-      {/* B级: 底部居中文字标签 */}
-      {bEvents.length > 0 && (
-        <div className="mt-auto text-[10px] leading-tight text-[var(--event-B)] truncate px-0.5 text-center">
-          {bEvents.map((e) => e.name).join(' ')}
-        </div>
-      )}
-    </>
-  )
-}
-
-// ============================================
-// 事件标记子组件
-// ============================================
-
-function EventMarkers({ events }: { events: CalendarEvent[] }) {
-  if (events.length === 0) return null
-
-  const visibleEvents = events.filter((e) => e.display.isVisible)
-  if (visibleEvents.length === 0) return null
-
-  return (
-    <div className="absolute bottom-1 left-2 right-2 flex gap-0.5">
-      {visibleEvents.slice(0, 3).map((evt) => (
-        <div
-          key={evt.id}
-          className="h-0.5 flex-1 rounded-full"
-          style={{ backgroundColor: evt.display.color }}
-          title={evt.title}
-        />
-      ))}
-    </div>
-  )
-}
-
-// ============================================
-// 潮汐指示器
-// ============================================
-
-function TideIndicator({ tide }: { tide: TideLevel }) {
-  if (tide === 'normal') return null
-
-  const config: Record<string, { label: string; color: string }> = {
-    spring: { label: '大潮', color: 'var(--event-S)' },
-    neap: { label: '中潮', color: 'var(--event-B)' },
-  }
-
-  const info = config[tide]
-  if (!info) return null
+function TopBadge({ events }: { events: AstronomicalEvent[] }) {
+  const top = events.find((e) => e.level === 'S') || events.find((e) => e.level === 'A')
+  if (!top) return null
 
   return (
     <span
-      className="absolute bottom-0.5 left-1 text-[9px] leading-none opacity-50"
-      style={{ color: info.color }}
-      title={info.label}
-    >
-      {info.label}
-    </span>
+      className={cn(
+        'absolute top-1 right-1 w-2 h-2 rounded-full',
+        top.level === 'S' && 'bg-[var(--event-S)] animate-pulse',
+        top.level === 'A' && 'bg-[var(--event-A)]',
+      )}
+      title={top.name}
+      aria-label={top.name}
+    />
   )
+}
+
+// ============================================
+// 潮汐标签常量
+// ============================================
+
+const TIDE_LABELS: Record<string, string> = {
+  spring: '大潮',
+  neap: '中潮',
 }
 
 // ============================================
@@ -195,7 +140,7 @@ export function GridCell({
       {/* 日期数字 */}
       <span
         className={cn(
-          'text-sm sm:text-base tabular-nums',
+          'text-sm sm:text-base tabular-nums leading-none mt-2',
           isCurrentMonth && !isSelected && 'font-normal',
           isSelected && 'font-semibold text-[var(--accent-700)]',
           !isCurrentMonth && 'font-light',
@@ -204,14 +149,40 @@ export function GridCell({
         {solar.day}
       </span>
 
-      {/* 天象标记 */}
-      <AstronomicalMarkers events={astronomicalEvents} />
+      {/* S/A 级圆点 */}
+      <TopBadge events={astronomicalEvents} />
 
-      {/* 事件彩色条 */}
-      <EventMarkers events={events} />
-
-      {/* 潮汐指示 */}
-      <TideIndicator tide={tide} />
+      {/* 底部行：B级天象 + 潮汐 + 事件彩条 */}
+      <div className="absolute bottom-0 left-1 right-1 flex flex-col items-center gap-px pb-1">
+        {/* B级天象 */}
+        {astronomicalEvents.filter((e) => e.level === 'B').length > 0 && (
+          <span className="text-[9px] leading-tight text-[var(--event-B)] truncate text-center w-full">
+            {astronomicalEvents.filter((e) => e.level === 'B').map((e) => e.name).join(' ')}
+          </span>
+        )}
+        {/* 潮汐 */}
+        {tide !== 'normal' && TIDE_LABELS[tide] && (
+          <span className={cn(
+            'text-[9px] leading-tight',
+            tide === 'spring' ? 'text-[var(--event-S)]' : 'text-[var(--event-B)]',
+          )}>
+            {TIDE_LABELS[tide]}
+          </span>
+        )}
+        {/* 事件彩条 */}
+        {events.filter((e) => e.display.isVisible).length > 0 && (
+          <div className="flex gap-0.5 w-full pt-0.5">
+            {events.filter((e) => e.display.isVisible).slice(0, 3).map((evt) => (
+              <div
+                key={evt.id}
+                className="h-0.5 flex-1 rounded-full"
+                style={{ backgroundColor: evt.display.color }}
+                title={evt.title}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </button>
   )
 }
