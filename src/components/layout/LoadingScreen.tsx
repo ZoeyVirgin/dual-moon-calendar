@@ -23,7 +23,7 @@ export function LoadingScreen({ children }: LoadingScreenProps) {
     <>
       {visible && (
         <div
-          className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white transition-opacity duration-500 ${exiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[var(--bg-primary)] transition-opacity duration-500 ${exiting ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
         >
           {/* Logo */}
           <Moon

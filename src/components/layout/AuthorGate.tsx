@@ -18,7 +18,6 @@ export function AuthorGate() {
   const [panelOpen, setPanelOpen] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [debugStatus, setDebugStatus] = useState('')
   const [loading, setLoading] = useState(false)
   const isAuthor = useAuthor()
 
@@ -26,7 +25,6 @@ export function AuthorGate() {
     if (!password.trim()) return
     setLoading(true)
     setError('')
-    setDebugStatus('')
 
     try {
       const res = await fetch('/api/auth', {
@@ -34,8 +32,6 @@ export function AuthorGate() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: password.trim() }),
       })
-
-      setDebugStatus(`POST /api/auth → ${res.status}`)
 
       const data = await res.json()
 
@@ -50,10 +46,8 @@ export function AuthorGate() {
     } catch (err) {
       if (err instanceof TypeError && err.message === 'Failed to fetch') {
         setError('网络错误，请检查网络连接')
-        setDebugStatus('POST /api/auth → 网络不通')
       } else {
         setError('网络错误，请重试')
-        setDebugStatus('POST /api/auth → 异常')
       }
     } finally {
       setLoading(false)
@@ -98,7 +92,7 @@ export function AuthorGate() {
         <div
           className={cn(
             'absolute right-0 top-full mt-2 w-64 p-4 rounded-[var(--radius-lg)]',
-            'bg-white border border-[var(--border-light)] shadow-[var(--shadow-lg)] z-50',
+            'bg-[var(--bg-primary)] border border-[var(--border-light)] shadow-[var(--shadow-lg)] z-50',
           )}
           onKeyDown={handleKeyDown}
         >
@@ -126,11 +120,6 @@ export function AuthorGate() {
             </Button>
           </div>
 
-          {debugStatus && (
-            <p className="text-[9px] text-[var(--text-tertiary)] mt-2 text-center select-text">
-              {debugStatus}
-            </p>
-          )}
         </div>
       )}
     </div>
