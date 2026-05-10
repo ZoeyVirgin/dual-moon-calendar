@@ -5,6 +5,7 @@ import { CalendarGrid } from '@/components/calendar/CalendarGrid'
 import { Navigation } from '@/components/calendar/Navigation'
 import { ViewSwitcher } from '@/components/calendar/ViewSwitcher'
 import { DetailPanel } from '@/components/calendar/DetailPanel'
+import { Timeline } from '@/components/events/Timeline'
 import { AuthorGate } from '@/components/layout/AuthorGate'
 import { ThemeToggle } from '@/components/layout/ThemeToggle'
 import { useCalendarStore } from '@/store/useCalendarStore'
@@ -40,6 +41,8 @@ export default function App() {
             <div key={`${currentYear}-${currentMonth}-${viewMode}`} className="animate-fade-in">
               <CalendarGrid />
             </div>
+
+            <Timeline />
 
             <DetailPanel />
           </div>
