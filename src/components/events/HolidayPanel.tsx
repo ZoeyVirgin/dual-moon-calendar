@@ -51,7 +51,7 @@ export function HolidayPanel() {
   }
 
   return (
-    <div className="mt-4 border border-[var(--border-light)] rounded-[var(--radius-lg)] bg-[var(--bg-primary)]">
+    <div className="mt-4 border border-[var(--border-light)] rounded-[var(--radius-lg)] bg-[var(--bg-primary)] shadow-sm">
       <button
         type="button"
         onClick={() => setOpen(!open)}

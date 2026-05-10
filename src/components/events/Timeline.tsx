@@ -40,7 +40,7 @@ export function Timeline({ className }: TimelineProps) {
   if (visible.length === 0) return null
 
   return (
-    <div className={cn('mt-4 border border-[var(--border-light)] rounded-[var(--radius-lg)] bg-[var(--bg-primary)]', className)}>
+    <div className={cn('mt-4 border border-[var(--border-light)] rounded-[var(--radius-lg)] bg-[var(--bg-primary)] shadow-sm', className)}>
       {/* 标题栏 */}
       <button
         type="button"
