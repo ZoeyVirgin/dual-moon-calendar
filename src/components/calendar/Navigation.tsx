@@ -93,69 +93,72 @@ export function Navigation({ className }: NavigationProps) {
 
       {/* 年月标题（可点击跳转）*/}
       {editing ? (
-        <div className="flex flex-col gap-2 px-2" onKeyDown={handleKeyDown}>
-          {/* 年份行 */}
-          <div className="flex items-center gap-1.5">
-            <Input
-              ref={inputRef}
-              value={editYear}
-              onChange={setEditYear}
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              size="sm"
-              className="w-20 text-center"
-              aria-label="年份"
-            />
-            <span className="text-sm text-[var(--text-secondary)]">年</span>
-            <Button variant="primary" size="sm" onClick={handleJump}>
-              跳转
-            </Button>
-          </div>
+        <div className="flex items-center gap-1 px-1" onKeyDown={handleKeyDown}>
+          <style>{`
+            .dropdown-list::-webkit-scrollbar { width: 4px; }
+            .dropdown-list::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
+            .dropdown-list::-webkit-scrollbar-track { background: transparent; }
+          `}</style>
+          <Input
+            ref={inputRef}
+            value={editYear}
+            onChange={setEditYear}
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            size="sm"
+            className="w-16 text-center"
+            aria-label="年份"
+          />
+          <span className="text-xs text-[var(--text-secondary)]">年</span>
 
           {/* 月份下拉 */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-sm text-[var(--text-secondary)]">月</span>
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setMonthOpen(!monthOpen)}
-                className={cn(
-                  'h-8 w-20 rounded-[var(--radius-sm)] border border-[var(--border-light)]',
-                  'text-xs text-[var(--text-primary)] bg-[var(--bg-primary)]',
-                  'hover:border-[var(--accent-300)] transition-colors',
-                  'flex items-center justify-center gap-0.5',
-                )}
-              >
-                {editMonth}月
-                <ChevronDown className="h-3 w-3 text-[var(--text-tertiary)]" />
-              </button>
-
-              {monthOpen && (
-                <div className="absolute top-full left-0 mt-1 w-20 max-h-52 overflow-y-auto rounded-[var(--radius-md)] border border-[var(--border-light)] bg-[var(--bg-primary)] shadow-[var(--shadow-md)] z-50 py-1">
-                  {Array.from({ length: 12 }, (_, i) => {
-                    const m = i + 1
-                    const selected = Number(editMonth) === m
-                    return (
-                      <button
-                        key={m}
-                        type="button"
-                        onClick={() => { setEditMonth(String(m)); setMonthOpen(false) }}
-                        className={cn(
-                          'w-full h-8 text-xs transition-colors',
-                          selected
-                            ? 'bg-[var(--accent-500)] text-white'
-                            : 'text-[var(--text-primary)] hover:bg-[var(--accent-50)]',
-                        )}
-                      >
-                        {m}月
-                      </button>
-                    )
-                  })}
-                </div>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setMonthOpen(!monthOpen)}
+              className={cn(
+                'h-8 w-16 rounded-[var(--radius-sm)] border border-[var(--border-light)]',
+                'text-xs text-[var(--text-primary)] bg-[var(--bg-primary)]',
+                'hover:border-[var(--accent-300)] transition-colors',
+                'flex items-center justify-center gap-0.5',
               )}
-            </div>
+            >
+              {editMonth}月
+              <ChevronDown className="h-3 w-3 text-[var(--text-tertiary)]" />
+            </button>
+
+            {monthOpen && (
+              <div
+                className="dropdown-list absolute top-full left-0 mt-1 w-16 max-h-52 overflow-y-auto rounded-[var(--radius-md)] border border-[var(--border-light)] bg-[var(--bg-primary)] shadow-[var(--shadow-md)] z-50 py-1"
+                style={{ scrollbarWidth: 'thin', scrollbarColor: 'var(--border-light) transparent' }}
+              >
+                {Array.from({ length: 12 }, (_, i) => {
+                  const m = i + 1
+                  const selected = Number(editMonth) === m
+                  return (
+                    <button
+                      key={m}
+                      type="button"
+                      onClick={() => { setEditMonth(String(m)); setMonthOpen(false) }}
+                      className={cn(
+                        'w-full h-8 text-xs transition-colors',
+                        selected
+                          ? 'bg-[var(--accent-500)] text-white'
+                          : 'text-[var(--text-primary)] hover:bg-[var(--accent-50)]',
+                      )}
+                    >
+                      {m}月
+                    </button>
+                  )
+                })}
+              </div>
+            )}
           </div>
+
+          <Button variant="primary" size="sm" onClick={handleJump}>
+            跳转
+          </Button>
         </div>
       ) : (
         <button
