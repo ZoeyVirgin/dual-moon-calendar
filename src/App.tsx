@@ -36,22 +36,26 @@ export default function App() {
     <ErrorBoundary>
       <LoadingScreen>
         <MainLayout headerActions={<HeaderActions />}>
-          <div className="flex-1 flex flex-col p-3 sm:p-4 max-w-6xl mx-auto w-full">
-            <div className="flex flex-col lg:flex-row gap-4">
-              {/* 左侧：导航 + 日历 + 时间线 */}
-              <div className="lg:w-[420px] shrink-0">
+          <div className="flex-1 flex flex-col p-3 sm:p-4 max-w-7xl mx-auto w-full">
+            <div className="flex flex-col lg:flex-row gap-4 justify-center">
+              {/* 左侧：详情 + 节日 */}
+              <div className="lg:w-72 shrink-0 order-2 lg:order-1">
+                <DetailPanel />
+                <HolidayPanel />
+              </div>
+
+              {/* 中间：导航 + 日历 + 时间线 */}
+              <div className="lg:w-[420px] shrink-0 order-1 lg:order-2">
                 <Navigation className="mb-4" />
-                <div key={`${currentYear}-${currentMonth}-${viewMode}`} className="animate-fade-in shadow-sm rounded-[var(--radius-lg)] overflow-hidden">
+                <div key={`${currentYear}-${currentMonth}-${viewMode}`}
+                     className="animate-fade-in shadow-sm rounded-[var(--radius-lg)] overflow-hidden bg-[var(--bg-primary)]">
                   <CalendarGrid />
                 </div>
                 <Timeline />
               </div>
 
-              {/* 右侧：详情 + 节日管理 */}
-              <div className="flex-1 min-w-0">
-                <DetailPanel />
-                <HolidayPanel />
-              </div>
+              {/* 右侧视觉留白 */}
+              <div className="hidden lg:block lg:w-72 shrink-0 order-3" />
             </div>
           </div>
         </MainLayout>

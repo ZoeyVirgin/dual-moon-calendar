@@ -107,34 +107,39 @@ export function detectMoonPhase(
 // ============================================
 
 /**
- * 检测双月合朔或冲日事件
+ * 检测双月同时合朔或同时冲日事件
  *
- * 基于双月会合周期37.1040天：
- * - 合朔（S级）：phaseInCycle ≈ 0 或 CYCLE（双月黄经差≈0°）
- * - 冲日（A级）：phaseInCycle ≈ CYCLE/2（双月黄经差≈180°）
+ * 双月合朔日：主月与副月同时为朔日（S级，约812.5天一次）
+ * 双月冲日：主月与副月同时为望日（A级，出现在合朔间的中位）
  *
- * 使用±1.5天容差。假设ABS=0时双月恰好处在合朔位置（相位偏移=0）。
+ * 通过直接检查两月的月龄是否同时接近目标相位实现，±3天容差。
  */
 export function detectSynodicEvent(abs: number): AstronomicalEvent | null {
-  const tolerance = 1.5
-  const phaseInCycle = ((abs % SYNODIC_CYCLE) + SYNODIC_CYCLE) % SYNODIC_CYCLE
+  const primaryAge = calculateMoonAge(abs, SYNODIC_MONTH_PRIMARY)
+  const secondaryAge = calculateMoonAge(abs, SYNODIC_MONTH_SECONDARY)
+  const tolerance = 3
 
-  // 合朔检测（靠近周期起点或终点）
-  if (phaseInCycle <= tolerance || phaseInCycle >= SYNODIC_CYCLE - tolerance) {
+  // 判断是否接近朔（age ≈ 0 或 age ≈ cycleLength）
+  const primaryNearNew = Math.min(primaryAge, SYNODIC_MONTH_PRIMARY - primaryAge) <= tolerance
+  const secondaryNearNew = Math.min(secondaryAge, SYNODIC_MONTH_SECONDARY - secondaryAge) <= tolerance
+
+  if (primaryNearNew && secondaryNearNew) {
     return {
-      id: 'synodic-conjunction',
+      id: 'dual-moon-conjunction',
       name: '双月合朔日',
       level: 'S',
       category: 'synodic',
-      description: '主月与副月同时为朔日，可能观测到双日全食',
+      description: '主月与副月同时为朔日，太阳-主月-副月-地星成一条直线，可能出现双日全食',
     }
   }
 
-  // 冲日检测（靠近半周期位置）
-  const oppositionCenter = SYNODIC_CYCLE / 2
-  if (Math.abs(phaseInCycle - oppositionCenter) <= tolerance) {
+  // 判断是否接近望（age ≈ cycleLength/2）
+  const primaryNearFull = Math.abs(primaryAge - SYNODIC_MONTH_PRIMARY / 2) <= tolerance
+  const secondaryNearFull = Math.abs(secondaryAge - SYNODIC_MONTH_SECONDARY / 2) <= tolerance
+
+  if (primaryNearFull && secondaryNearFull) {
     return {
-      id: 'synodic-opposition',
+      id: 'dual-moon-opposition',
       name: '双月冲日',
       level: 'A',
       category: 'synodic',
