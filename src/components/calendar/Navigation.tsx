@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, ChevronDown } from 'lucide-react'
 import { useCalendarStore } from '@/store/useCalendarStore'
 
 interface NavigationProps {
@@ -15,22 +15,12 @@ export function Navigation({ className }: NavigationProps) {
   const navigateMonth = useCalendarStore((s) => s.navigateMonth)
   const goToYearMonth = useCalendarStore((s) => s.goToYearMonth)
 
-  // 年份快速跳转
-  const handlePrevYear = () => {
-    if (currentYear > 0) goToYearMonth(currentYear - 1, currentMonth)
-  }
-  const handleNextYear = () => {
-    goToYearMonth(currentYear + 1, currentMonth)
-  }
-
-  const isAtMonthStart = currentYear === 0 && currentMonth === 1
-  const isAtYearStart = currentYear === 0
-
   // 标题点击 → 内联日期选择器
   const [editing, setEditing] = useState(false)
   const [hint, setHint] = useState('')
   const [editYear, setEditYear] = useState(String(currentYear))
   const [editMonth, setEditMonth] = useState(String(currentMonth))
+  const [monthOpen, setMonthOpen] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -41,6 +31,29 @@ export function Navigation({ className }: NavigationProps) {
     }
   }, [editing, currentYear, currentMonth])
 
+  const showHint = (msg: string) => {
+    setHint(msg)
+    setTimeout(() => setHint(''), 2500)
+  }
+
+  // 导航 handlers（带边界 hint）
+  const handlePrevYear = () => {
+    if (currentYear === 0) { showHint('已到达纪元起点'); return }
+    goToYearMonth(currentYear - 1, currentMonth)
+  }
+  const handleNextYear = () => {
+    if (currentYear >= 5000) { showHint('已到达时间上限'); return }
+    goToYearMonth(currentYear + 1, currentMonth)
+  }
+  const handlePrevMonth = () => {
+    if (currentYear === 0 && currentMonth === 1) { showHint('已到达纪元起点'); return }
+    navigateMonth('prev')
+  }
+  const handleNextMonth = () => {
+    if (currentYear >= 5000 && currentMonth === 12) { showHint('已到达时间上限'); return }
+    navigateMonth('next')
+  }
+
   const handleJump = () => {
     const rawYear = parseInt(editYear, 10) || 0
     const rawMonth = parseInt(editMonth, 10) || 1
@@ -48,8 +61,7 @@ export function Navigation({ className }: NavigationProps) {
     const m = Math.max(1, Math.min(12, rawMonth))
     goToYearMonth(y, m)
     if (rawYear > 5000 || rawYear < 0) {
-      setHint('年份限制 0-5000，已自动调整')
-      setTimeout(() => setHint(''), 2500)
+      showHint('年份限制 0-5000，已自动调整')
     }
     setEditing(false)
   }
@@ -67,9 +79,7 @@ export function Navigation({ className }: NavigationProps) {
         size="sm"
         icon={<ChevronsLeft className="h-4 w-4" />}
         onClick={handlePrevYear}
-        disabled={isAtYearStart}
         aria-label="上一年"
-        aria-disabled={isAtYearStart}
       />
 
       {/* 上一月 */}
@@ -77,10 +87,8 @@ export function Navigation({ className }: NavigationProps) {
         variant="ghost"
         size="sm"
         icon={<ChevronLeft className="h-4 w-4" />}
-        onClick={() => navigateMonth('prev')}
-        disabled={isAtMonthStart}
+        onClick={handlePrevMonth}
         aria-label="上一月"
-        aria-disabled={isAtMonthStart}
       />
 
       {/* 年月标题（可点击跳转）*/}
@@ -92,9 +100,11 @@ export function Navigation({ className }: NavigationProps) {
               ref={inputRef}
               value={editYear}
               onChange={setEditYear}
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               size="sm"
-              className="w-20 text-center [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              className="w-20 text-center"
               aria-label="年份"
             />
             <span className="text-sm text-[var(--text-secondary)]">年</span>
@@ -103,27 +113,48 @@ export function Navigation({ className }: NavigationProps) {
             </Button>
           </div>
 
-          {/* 月份按钮组 */}
-          <div className={cn('grid grid-cols-3 gap-1 w-44')}>
-            {Array.from({ length: 12 }, (_, i) => {
-              const m = i + 1
-              const selected = Number(editMonth) === m
-              return (
-                <button
-                  key={m}
-                  type="button"
-                  onClick={() => setEditMonth(String(m))}
-                  className={cn(
-                    'h-7 text-xs rounded-[var(--radius-sm)] border transition-colors',
-                    selected
-                      ? 'bg-[var(--accent-500)] text-white border-[var(--accent-500)]'
-                      : 'bg-[var(--bg-primary)] text-[var(--text-primary)] border-[var(--border-light)] hover:bg-[var(--accent-50)]',
-                  )}
-                >
-                  {m}月
-                </button>
-              )
-            })}
+          {/* 月份下拉 */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-sm text-[var(--text-secondary)]">月</span>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setMonthOpen(!monthOpen)}
+                className={cn(
+                  'h-8 w-20 rounded-[var(--radius-sm)] border border-[var(--border-light)]',
+                  'text-xs text-[var(--text-primary)] bg-[var(--bg-primary)]',
+                  'hover:border-[var(--accent-300)] transition-colors',
+                  'flex items-center justify-center gap-0.5',
+                )}
+              >
+                {editMonth}月
+                <ChevronDown className="h-3 w-3 text-[var(--text-tertiary)]" />
+              </button>
+
+              {monthOpen && (
+                <div className="absolute top-full left-0 mt-1 w-20 max-h-52 overflow-y-auto rounded-[var(--radius-md)] border border-[var(--border-light)] bg-[var(--bg-primary)] shadow-[var(--shadow-md)] z-50 py-1">
+                  {Array.from({ length: 12 }, (_, i) => {
+                    const m = i + 1
+                    const selected = Number(editMonth) === m
+                    return (
+                      <button
+                        key={m}
+                        type="button"
+                        onClick={() => { setEditMonth(String(m)); setMonthOpen(false) }}
+                        className={cn(
+                          'w-full h-8 text-xs transition-colors',
+                          selected
+                            ? 'bg-[var(--accent-500)] text-white'
+                            : 'text-[var(--text-primary)] hover:bg-[var(--accent-50)]',
+                        )}
+                      >
+                        {m}月
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       ) : (
@@ -153,7 +184,7 @@ export function Navigation({ className }: NavigationProps) {
         variant="ghost"
         size="sm"
         icon={<ChevronRight className="h-4 w-4" />}
-        onClick={() => navigateMonth('next')}
+        onClick={handleNextMonth}
         aria-label="下一月"
       />
 
