@@ -117,7 +117,7 @@ export function detectMoonPhase(
 export function detectSynodicEvent(abs: number): AstronomicalEvent | null {
   const primaryAge = calculateMoonAge(abs, SYNODIC_MONTH_PRIMARY)
   const secondaryAge = calculateMoonAge(abs, SYNODIC_MONTH_SECONDARY)
-  const tolerance = 3
+  const tolerance = 2
 
   // 判断是否接近朔（age ≈ 0 或 age ≈ cycleLength）
   const primaryNearNew = Math.min(primaryAge, SYNODIC_MONTH_PRIMARY - primaryAge) <= tolerance
