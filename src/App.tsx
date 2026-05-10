@@ -6,6 +6,7 @@ import { Navigation } from '@/components/calendar/Navigation'
 import { ViewSwitcher } from '@/components/calendar/ViewSwitcher'
 import { DetailPanel } from '@/components/calendar/DetailPanel'
 import { Timeline } from '@/components/events/Timeline'
+import { HolidayPanel } from '@/components/events/HolidayPanel'
 import { AuthorGate } from '@/components/layout/AuthorGate'
 import { ThemeToggle } from '@/components/layout/ThemeToggle'
 import { useCalendarStore } from '@/store/useCalendarStore'
@@ -35,16 +36,24 @@ export default function App() {
     <ErrorBoundary>
       <LoadingScreen>
         <MainLayout headerActions={<HeaderActions />}>
-          <div className="flex-1 flex flex-col p-3 sm:p-4 max-w-3xl mx-auto w-full">
+          <div className="flex-1 flex flex-col p-3 sm:p-4 max-w-6xl mx-auto w-full">
             <Navigation className="mb-4" />
 
-            <div key={`${currentYear}-${currentMonth}-${viewMode}`} className="animate-fade-in">
-              <CalendarGrid />
+            <div className="flex flex-col lg:flex-row gap-4">
+              {/* 左侧：日历网格 + 时间线 */}
+              <div className="lg:w-[420px] shrink-0">
+                <div key={`${currentYear}-${currentMonth}-${viewMode}`} className="animate-fade-in">
+                  <CalendarGrid />
+                </div>
+                <Timeline />
+              </div>
+
+              {/* 右侧：详情 + 节日管理 */}
+              <div className="flex-1 min-w-0">
+                <DetailPanel />
+                <HolidayPanel />
+              </div>
             </div>
-
-            <Timeline />
-
-            <DetailPanel />
           </div>
         </MainLayout>
       </LoadingScreen>
