@@ -212,7 +212,7 @@ export function EventModal({ mode, initialData, anchorAbs, onSubmit, onCancel }:
                 {dayOpen && (
                   <div className="dropdown-list absolute top-full left-0 mt-1 w-full max-h-44 overflow-y-auto rounded-[var(--radius-md)] border border-[var(--border-light)] bg-[var(--bg-primary)] shadow-[var(--shadow-md)] z-50 py-1"
                     style={{ scrollbarWidth: 'thin', scrollbarColor: 'var(--border-light) transparent' }}>
-                    {Array.from({ length: 30 }, (_, i) => {
+                    {Array.from({ length: anchorMonth === 1 || anchorMonth === 12 ? 30 : 29 }, (_, i) => {
                       const d = i + 1
                       return (
                         <button key={d} type="button"
