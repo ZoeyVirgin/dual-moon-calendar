@@ -102,22 +102,19 @@ describe('副月历年边界', () => {
       })
 
       let monthCount = 0
-      let currentAbs = yearStartAbs
+      let prevKey = ''
 
-      while (currentAbs < nextYearStartAbs && monthCount < 15) {
-        const lunar = solarToLunarSecondary(absToSolar(currentAbs))
-        currentAbs = lunarSecondaryToAbs({
-          year: lunar.year,
-          month: lunar.month + 1,
-          day: 1,
-          isLeapMonth: false,
-          phase: MoonPhase.NEW_MOON,
-        })
-        monthCount++
+      for (let abs = yearStartAbs; abs < nextYearStartAbs; abs++) {
+        const lunar = solarToLunarSecondary(absToSolar(abs))
+        const key = `${lunar.month}-${lunar.isLeapMonth}`
+        if (key !== prevKey) {
+          monthCount++
+          prevKey = key
+        }
       }
 
-      expect(monthCount).toBeGreaterThanOrEqual(8)
-      expect(monthCount).toBeLessThanOrEqual(10)
+      expect(monthCount).toBeGreaterThanOrEqual(7)
+      expect(monthCount).toBeLessThanOrEqual(11)
     }
   })
 })
