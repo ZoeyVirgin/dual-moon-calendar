@@ -10,7 +10,7 @@ interface MainLayoutProps {
 
 export function MainLayout({ children, headerActions, className }: MainLayoutProps) {
   return (
-    <div className={cn('min-h-screen flex flex-col bg-[var(--bg-primary)]', className)}>
+    <div className={cn('min-h-screen flex flex-col bg-[var(--bg-page)]', className)}>
       {/* Header */}
       <header
         className={cn(

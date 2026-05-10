@@ -37,12 +37,11 @@ export default function App() {
       <LoadingScreen>
         <MainLayout headerActions={<HeaderActions />}>
           <div className="flex-1 flex flex-col p-3 sm:p-4 max-w-6xl mx-auto w-full">
-            <Navigation className="mb-4" />
-
             <div className="flex flex-col lg:flex-row gap-4">
-              {/* 左侧：日历网格 + 时间线 */}
+              {/* 左侧：导航 + 日历 + 时间线 */}
               <div className="lg:w-[420px] shrink-0">
-                <div key={`${currentYear}-${currentMonth}-${viewMode}`} className="animate-fade-in">
+                <Navigation className="mb-4" />
+                <div key={`${currentYear}-${currentMonth}-${viewMode}`} className="animate-fade-in shadow-sm rounded-[var(--radius-lg)] overflow-hidden">
                   <CalendarGrid />
                 </div>
                 <Timeline />

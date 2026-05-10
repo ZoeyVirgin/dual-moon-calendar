@@ -78,7 +78,7 @@ export function DetailPanel({ className }: DetailPanelProps) {
     <div
       className={cn(
         'mt-4 overflow-hidden transition-all duration-[var(--duration-slow)]',
-        'border border-[var(--border-light)] rounded-[var(--radius-lg)] bg-[var(--bg-primary)]',
+        'border border-[var(--border-light)] rounded-[var(--radius-lg)] bg-[var(--bg-primary)] shadow-sm',
         isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0 border-transparent',
         className,
       )}

@@ -9,6 +9,7 @@
   --bg-primary: #FFFFFF;
   --bg-secondary: #F9FAFB;
   --bg-tertiary: #F3F4F6;
+  --bg-page: #F3F4F6;             /* 页面底板色 */
   --bg-active: #EEF2FF;
 
   /* ========================================
@@ -154,6 +155,7 @@ html {
    深色主题（V1.3）
    ========================================== */
 [data-theme='dark'] {
+  --bg-page: #0A0B14;
   --bg-primary: #0F1119;
   --bg-secondary: #1A1D2B;
   --bg-tertiary: #252836;
