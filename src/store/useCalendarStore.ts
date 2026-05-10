@@ -45,7 +45,7 @@ export const useCalendarStore = create<CalendarState>((set) => ({
         }
         return { currentMonth: state.currentMonth - 1 }
       } else {
-        if (state.currentYear === 1200 && state.currentMonth === 12) return state
+        if (state.currentYear >= 5000 && state.currentMonth === 12) return state
         if (state.currentMonth === 12) {
           return { currentYear: state.currentYear + 1, currentMonth: 1 }
         }
