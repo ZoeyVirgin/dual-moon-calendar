@@ -131,47 +131,53 @@ export function DetailPanel({ className }: DetailPanelProps) {
         {/* 分隔线 */}
         <div className="border-t border-[var(--border-light)]" />
 
-        {/* B区：天象列表 */}
-        <section aria-label="今日天象">
-          <h3 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wide mb-2">
-            今日天象
-          </h3>
-          {astronomicalEvents.length === 0 ? (
-            <p className="text-xs text-[var(--text-tertiary)]">无特殊天象</p>
-          ) : (
-            <ul className="space-y-1.5">
-              {astronomicalEvents.map((event) => (
-                <li key={event.id} className="flex items-center gap-2 text-sm">
-                  <span
-                    className={cn(
-                      'inline-flex items-center justify-center px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none',
-                      LEVEL_STYLES[event.level],
-                    )}
-                  >
-                    {event.level}
-                  </span>
-                  <span className="text-[var(--text-primary)]">{event.name}</span>
-                  {event.description && (
-                    <span className="text-xs text-[var(--text-tertiary)] hidden sm:inline">
-                      — {event.description}
+        {/* B+C 可滚动区域 */}
+        <div
+          className="max-h-[240px] overflow-y-auto"
+          style={{ scrollbarWidth: 'thin', scrollbarColor: 'var(--border-light) transparent' }}
+        >
+          {/* B区：天象列表 */}
+          <section aria-label="今日天象">
+            <h3 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wide mb-2">
+              今日天象
+            </h3>
+            {astronomicalEvents.length === 0 ? (
+              <p className="text-xs text-[var(--text-tertiary)]">无特殊天象</p>
+            ) : (
+              <ul className="space-y-1.5">
+                {astronomicalEvents.map((event) => (
+                  <li key={event.id} className="flex items-center gap-2 text-sm">
+                    <span
+                      className={cn(
+                        'inline-flex items-center justify-center px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none',
+                        LEVEL_STYLES[event.level],
+                      )}
+                    >
+                      {event.level}
                     </span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+                    <span className="text-[var(--text-primary)]">{event.name}</span>
+                    {event.description && (
+                      <span className="text-xs text-[var(--text-tertiary)] hidden sm:inline">
+                        — {event.description}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
 
-        {/* 分隔线 */}
-        <div className="border-t border-[var(--border-light)]" />
+          {/* 分隔线 */}
+          <div className="border-t border-[var(--border-light)] my-3" />
 
-        {/* C区：当日事件（含创建按钮） */}
-        <section aria-label="当日事件">
-          <h3 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wide mb-2">
-            当日事件
-          </h3>
-          <EventList abs={date.abs} events={events} />
-        </section>
+          {/* C区：当日事件（含创建按钮） */}
+          <section aria-label="当日事件">
+            <h3 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wide mb-2">
+              当日事件
+            </h3>
+            <EventList abs={date.abs} events={events} />
+          </section>
+        </div>
       </div>
     </div>
   )

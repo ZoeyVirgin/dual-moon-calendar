@@ -70,7 +70,7 @@ export function Timeline({ className }: TimelineProps) {
       <div
         className={cn(
           'overflow-hidden transition-all',
-          open ? 'max-h-[360px] opacity-100 overflow-y-auto' : 'max-h-0 opacity-0',
+          open ? 'max-h-[240px] opacity-100 overflow-y-auto' : 'max-h-0 opacity-0',
         )}
         style={{
           transitionDuration: '600ms',
